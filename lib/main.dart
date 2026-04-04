@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'constants/app_colors.dart';
@@ -25,6 +24,7 @@ import 'services/openai_service.dart';
 import 'services/firestore_service.dart';
 import 'services/onesignal_service.dart';
 import 'services/remote_config_service.dart';
+import 'services/subscription_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,25 +48,9 @@ void main() async {
   final oneSignalService = OneSignalService();
   await oneSignalService.initialize();
 
-  // Test Firestore connection
-  print('=== Firebase initialized ===');
-  print('Testing Firestore connection...');
-  try {
-    final testRef = FirebaseFirestore.instance.collection('_test').doc('_test');
-    await testRef
-        .set({'test': 'value', 'timestamp': DateTime.now().millisecondsSinceEpoch})
-        .timeout(
-          const Duration(seconds: 5),
-          onTimeout: () {
-            print('FIRESTORE CONNECTION TIMEOUT!');
-            throw Exception('Firestore timeout');
-          },
-        );
-    print('Firestore connection OK');
-    await testRef.delete();
-  } catch (e) {
-    print('FIRESTORE CONNECTION ERROR: $e');
-  }
+  // Initialize RevenueCat
+  final subscriptionService = SubscriptionService();
+  await subscriptionService.initialize();
 
   runApp(const MyApp());
 }

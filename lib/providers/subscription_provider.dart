@@ -1,11 +1,9 @@
 import 'package:flutter/foundation.dart';
 import '../models/subscription.dart';
 import '../services/subscription_service.dart';
-import '../services/onesignal_service.dart';
 
 class SubscriptionProvider with ChangeNotifier {
   final SubscriptionService _subscriptionService = SubscriptionService();
-  final OneSignalService _oneSignalService = OneSignalService();
   SubscriptionStatus _status = SubscriptionStatus(isPremium: false);
   bool _isLoading = false;
 
@@ -76,22 +74,8 @@ class SubscriptionProvider with ChangeNotifier {
 
   /// Update OneSignal tags on subscription change
   Future<void> _updateOneSignalTags(SubscriptionStatus status) async {
-    try {
-      await _oneSignalService.setTags({
-        'is_premium': status.isPremium.toString(),
-        'subscription_plan': status.subscriptionPlanId ?? 'none',
-        'subscription_platform': status.platform ?? 'none',
-        'subscription_active': status.isActive.toString(),
-      });
-
-      if (status.expirationDate != null) {
-        await _oneSignalService.setTags({'subscription_expires_at': status.expirationDate!.toIso8601String()});
-      }
-
-      print('✅ Теги подписки обновлены в OneSignal');
-    } catch (e) {
-      print('❌ Ошибка обновления тегов подписки в OneSignal: $e');
-    }
+    // Tags disabled — free OneSignal plan allows only 1 tag per user
+    // Use External User ID (set on login) for user targeting instead
   }
 
   /// Check premium feature access

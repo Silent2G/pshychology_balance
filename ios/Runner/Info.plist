@@ -29,7 +29,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.542658810082-624mpeqosecv4eh2aijde69rottv9j9r</string>
+				<string>com.googleusercontent.apps.210836512724-8pk1ikmrg78ev7dl2d17a48bjk5hvhdc</string>
 			</array>
 		</dict>
 	</array>
@@ -39,10 +39,31 @@
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Приложение не собирает данные о геолокации. Это разрешение требуется для корректной работы сторонних библиотек.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Для вибору фото профілю</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Для запису голосових повідомлень</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Для вибору фото профілю</string>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneClassName</key>
+					<string>UIWindowScene</string>
+					<key>UISceneConfigurationName</key>
+					<string>flutter</string>
+					<key>UISceneDelegateClassName</key>
+					<string>FlutterSceneDelegate</string>
+					<key>UISceneStoryboardFile</key>
+					<string>Main</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

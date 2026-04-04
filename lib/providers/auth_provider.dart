@@ -63,14 +63,6 @@ class AuthProvider with ChangeNotifier {
         await _oneSignalService.setEmail(user.email!);
       }
 
-      // Set base tags in OneSignal
-      await _oneSignalService.setTags({
-        'user_id': user.uid,
-        'email': user.email ?? '',
-        'sign_in_method': user.providerData.isNotEmpty ? user.providerData.first.providerId : 'unknown',
-        'created_at': user.metadata.creationTime?.toIso8601String() ?? '',
-      });
-
       print('✅ Данные пользователя синхронизированы с OneSignal и RevenueCat');
     } catch (e) {
       print('❌ Ошибка синхронизации пользователя с сервисами: $e');

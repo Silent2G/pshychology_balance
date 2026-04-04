@@ -24,7 +24,9 @@
       "Bash(./gradlew :file_picker:tasks)",
       "Bash(./gradlew :file_picker:compileDebugSources)",
       "Bash(./gradlew :app:compileDebugJavaWithJavac)",
-      "Bash(./gradlew :app:compileDebugJavaWithJavac --info)"
+      "Bash(./gradlew :app:compileDebugJavaWithJavac --info)",
+      "Bash(grep -r \"team\\\\|TEAM\\\\|provisioning\\\\|PROVISIONING\\\\|signing\\\\|SIGNING\\\\|certificate\\\\|CERTIFICATE\" /Users/appel/Development/ai_psychology_balance/ios/*.pbxproj)",
+      "Bash(grep -r \"email\\\\|Email\\\\|endpoint\\\\|host\\\\|url\\\\|URL\\\\|baseUrl\" /Users/appel/Development/ai_psychology_balance/lib/services/*.dart)"
     ]
   }
 }
