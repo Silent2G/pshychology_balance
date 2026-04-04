@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Psychology Balance — Документація проєкту</title>
+  <style>
+    :root { --bg: #f6f8fa; --card: #ffffff; --text: #24292f; --muted: #57606a; --accent: #0969da; --success: #1a7f37; }
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; margin: 0; padding: 2rem; }
+    .container { max-width: 900px; margin: 0 auto; }
+    h1 { font-size: 1.8rem; border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; }
+    h2 { font-size: 1.3rem; margin-top: 2rem; color: var(--accent); }
+    h3 { font-size: 1.1rem; margin-top: 1.5rem; }
+    code { background: #eaeef2; padding: 0.15em 0.4em; border-radius: 4px; font-size: 0.9em; }
+    pre { background: #eaeef2; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+    .card { background: var(--card); border-radius: 8px; padding: 1rem 1.5rem; margin: 1rem 0; border: 1px solid #d0d7de; }
+    ul { padding-left: 1.5rem; }
+    li { margin: 0.4rem 0; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th, td { text-align: left; padding: 0.5rem; border-bottom: 1px solid #d0d7de; }
+    th { color: var(--muted); font-weight: 500; }
+    .toc { background: var(--card); padding: 1rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid #d0d7de; }
+    .toc a { color: var(--accent); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    .warning { background: rgba(210,153,34,0.15); border-left: 4px solid #d29922; padding: 1rem; margin: 1rem 0; }
+    .info { background: rgba(56,139,253,0.15); border-left: 4px solid var(--accent); padding: 1rem; margin: 1rem 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>AI Psychology Balance (Psiho AI Balance)</h1>
+    <p>Flutter-додаток для психологічного тестування та AI-чату. Версія 1.0.3+18.</p>
+
+    <nav class="toc">
+      <strong>Зміст</strong>
+      <ul>
+        <li><a href="#overview">Огляд проєкту</a></li>
+        <li><a href="#setup">Налаштування середовища</a></li>
+        <li><a href="#structure">Структура проєкту</a></li>
+        <li><a href="#architecture">Архітектура</a></li>
+        <li><a href="#services">Сервіси та інтеграції</a></li>
+        <li><a href="#screens">Екрани та навігація</a></li>
+        <li><a href="#config">Конфігурація та секрети</a></li>
+        <li><a href="#build">Збірка та реліз</a></li>
+      </ul>
+    </nav>
+
+    <h2 id="overview">Огляд проєкту</h2>
+    <p>Мобільний додаток (iOS, Android) з функціями:</p>
+    <ul>
+      <li><strong>Авторизація</strong> — Email, Google, Apple Sign-In</li>
+      <li><strong>Психологічний тест</strong> — 10 питань, аналіз через OpenAI GPT-4o-mini</li>
+      <li><strong>AI-чат</strong> — текстові, голосові та фото-повідомлення</li>
+      <li><strong>Підписка</strong> — RevenueCat (доступ до чату)</li>
+      <li><strong>Локалізація</strong> — uk, en, es, hi, zh</li>
+      <li><strong>Push-сповіщення</strong> — OneSignal</li>
+    </ul>
+
+    <h2 id="setup">Налаштування середовища</h2>
+    <h3>Вимоги</h3>
+    <ul>
+      <li>Flutter SDK ^3.9.0</li>
+      <li>Dart ^3.9.0</li>
+      <li>Xcode (для iOS), Android Studio / SDK (для Android)</li>
+      <li>CocoaPods (iOS)</li>
+    </ul>
+    <h3>Встановлення</h3>
+    <pre><code>cd ai_psychology_balance
+flutter pub get</code></pre>
+    <h3>Запуск</h3>
+    <pre><code>flutter run</code></pre>
+
+    <h2 id="structure">Структура проєкту</h2>
+    <table>
+      <tr><th>Шлях</th><th>Опис</th></tr>
+      <tr><td><code>lib/main.dart</code></td><td>Точка входу, ініціалізація Firebase/RemoteConfig/OneSignal, роутинг</td></tr>
+      <tr><td><code>lib/screens/</code></td><td>Екрани додатку</td></tr>
+      <tr><td><code>lib/providers/</code></td><td>Provider: AuthProvider, SubscriptionProvider, LocaleProvider</td></tr>
+      <tr><td><code>lib/services/</code></td><td>Сервіси: OpenAI, Firestore, Auth, OneSignal, RevenueCat, RemoteConfig</td></tr>
+      <tr><td><code>lib/models/</code></td><td>ChatSession, ChatMessage, TestResult, Subscription</td></tr>
+      <tr><td><code>lib/widgets/</code></td><td>Повторно використовувані віджети</td></tr>
+      <tr><td><code>lib/constants/</code></td><td>Кольори, тексти</td></tr>
+      <tr><td><code>lib/l10n/</code></td><td>Локалізація (AppLocalizations)</td></tr>
+      <tr><td><code>assets/</code></td><td>Зображення, SVG</td></tr>
+      <tr><td><code>fonts/</code></td><td>Roboto, Montserrat</td></tr>
+    </table>
+
+    <h2 id="architecture">Архітектура</h2>
+    <h3>State Management</h3>
+    <p>Використовується <code>provider</code>. Основні провайдери:</p>
+    <ul>
+      <li><strong>AuthProvider</strong> — користувач, вхід/вихід, синхронізація з OneSignal та RevenueCat</li>
+      <li><strong>SubscriptionProvider</strong> — статус підписки, перевірка premium</li>
+      <li><strong>LocaleProvider</strong> — поточна мова</li>
+    </ul>
+    <h3>Навігація</h3>
+    <p>Екрани зберігаються в списку <code>_screens</code> в <code>AppNavigator</code>. Перемикання за індексом через <code>_navigateToScreen(index)</code>. Індекси:</p>
+    <ul>
+      <li>0 — NavigationScreen (головний)</li>
+      <li>1 — ChatScreen</li>
+      <li>2 — PaywallScreen</li>
+      <li>3 — TestIntroScreen</li>
+      <li>4–13 — TestQuestionScreen (10 питань)</li>
+      <li>14 — TestResultScreen</li>
+      <li>15 — ShareResultScreen</li>
+      <li>16 — SessionCompleteScreen</li>
+    </ul>
+
+    <h2 id="services">Сервіси та інтеграції</h2>
+    <h3>Firebase</h3>
+    <ul>
+      <li><strong>Firebase Auth</strong> — email, Google, Apple</li>
+      <li><strong>Cloud Firestore</strong> — chatSessions, testResults, users</li>
+      <li><strong>Remote Config</strong> — OpenAI API key, системні промпти</li>
+    </ul>
+    <h3>OpenAI</h3>
+    <p>API key береться з Remote Config (ключ <code>openai_api_key</code>). Використовуються моделі GPT-4o-mini та Whisper. Сервіс: <code>lib/services/openai_service.dart</code>.</p>
+    <h3>RevenueCat</h3>
+    <p>Підписки. Ключі в <code>subscription_service.dart</code>: Apple та Google API keys. Ініціалізація при першому вході користувача.</p>
+    <h3>OneSignal</h3>
+    <p>Push-сповіщення. App ID в <code>onesignal_service.dart</code>. User ID синхронізується з Firebase Auth.</p>
+
+    <h2 id="screens">Екрани та навігація</h2>
+    <table>
+      <tr><th>Екран</th><th>Файл</th><th>Призначення</th></tr>
+      <tr><td>WelcomeScreen</td><td>welcome_screen.dart</td><td>Вхід, реєстрація</td></tr>
+      <tr><td>NavigationScreen</td><td>navigation_screen.dart</td><td>Нижня навігація: Головна, Історія, Профіль</td></tr>
+      <tr><td>MainInterfaceScreen</td><td>main_interface_screen.dart</td><td>Головна: кнопки «Чат» та «Тест»</td></tr>
+      <tr><td>ChatScreen</td><td>chat_screen.dart</td><td>AI-чат (текст, голос, фото)</td></tr>
+      <tr><td>PaywallScreen</td><td>paywall_screen.dart</td><td>Екран підписки</td></tr>
+      <tr><td>TestIntroScreen</td><td>test_intro_screen.dart</td><td>Вступ до тесту</td></tr>
+      <tr><td>TestQuestionScreen</td><td>test_question_screen.dart</td><td>Питання тесту (шкала 0–3)</td></tr>
+      <tr><td>TestResultScreen</td><td>test_result_screen.dart</td><td>Результати тесту</td></tr>
+      <tr><td>ShareResultScreen</td><td>share_result_screen.dart</td><td>Поділитися результатом</td></tr>
+      <tr><td>SessionCompleteScreen</td><td>session_complete_screen.dart</td><td>Завершення сесії чату</td></tr>
+      <tr><td>ProfileScreen</td><td>profile_screen.dart</td><td>Профіль, вихід</td></tr>
+      <tr><td>HistoryScreen</td><td>history_screen.dart</td><td>Історія чатів та тестів</td></tr>
+    </table>
+
+    <h2 id="config">Конфігурація та секрети</h2>
+    <div class="warning">
+      <strong>Важливо:</strong> Перед передачею проєкту перевірте, що секрети не закомічені або замінені на placeholder.
+    </div>
+    <ul>
+      <li><strong>firebase_options.dart</strong> — Firebase API keys, App IDs (генерується FlutterFire CLI)</li>
+      <li><strong>remote_config_service.dart</strong> — fallback OpenAI API key (краще зберігати тільки в Remote Config)</li>
+      <li><strong>subscription_service.dart</strong> — RevenueCat API keys (Apple, Google)</li>
+      <li><strong>onesignal_service.dart</strong> — OneSignal App ID</li>
+      <li><strong>android/key.properties</strong> — keystore для підпису релізу (не в репозиторії)</li>
+    </ul>
+    <h3>Firebase</h3>
+    <p>Проєкт: <code>aipsiho</code>. Для нового середовища: <code>flutterfire configure</code>.</p>
+    <h3>Підпис Android</h3>
+    <p>Створіть <code>android/key.properties</code>:</p>
+    <pre><code>storePassword=...
+keyPassword=...
+keyAlias=...
+storeFile=шлях/до/keystore.jks</code></pre>
+
+    <h2 id="build">Збірка та реліз</h2>
+    <h3>Android</h3>
+    <pre><code>flutter build apk --release
+# або
+flutter build appbundle --release</code></pre>
+    <p>Application ID: <code>com.ai.psychology.balance.app</code></p>
+    <h3>iOS</h3>
+    <pre><code>flutter build ios --release</code></pre>
+    <p>Bundle ID: <code>com.example.aiPsychologyBalance</code> (в firebase_options)</p>
+    <p>В Info.plist налаштовані: Google Sign-In URL scheme, дозволи для фото та мікрофона.</p>
+
+    <h2>Корисні команди</h2>
+    <pre><code>flutter pub get
+flutter analyze
+flutter test
+flutter build apk --release
+flutter build ios --release</code></pre>
+
+  </div>
+</body>
+</html>

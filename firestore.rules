@@ -1,0 +1,34 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Правила для chatSessions
+    match /chatSessions/{sessionId} {
+      // Разрешить чтение и запись только для авторизованных пользователей
+      allow read, write: if request.auth != null && 
+                           (resource == null || resource.data.userId == request.auth.uid);
+    }
+    
+    // Правила для testResults
+    match /testResults/{resultId} {
+      // Разрешить чтение и запись только для авторизованных пользователей
+      allow read, write: if request.auth != null && 
+                           (resource == null || resource.data.userId == request.auth.uid);
+    }
+    
+    // Правила для passwordRecoveryCodes
+    match /passwordRecoveryCodes/{email} {
+      // Разрешить создание кода без авторизации (для восстановления пароля)
+      allow create: if request.resource.data.keys().hasAll(['code', 'email', 'createdAt', 'expiresAt', 'used']) &&
+                      request.resource.data.email == email &&
+                      request.resource.data.used == false;
+      // Разрешить чтение только для проверки кода (без авторизации)
+      allow read: if true;
+      // Разрешить обновление только для отметки кода как использованного
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['used']) &&
+                      request.resource.data.used == true;
+      // Разрешить удаление для повторной отправки кода
+      allow delete: if true;
+    }
+  }
+}
+

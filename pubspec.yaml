@@ -1,0 +1,137 @@
+name: ai_psychology_balance
+description: "Psiho AI Balance"
+
+version: 1.0.3+18
+
+environment:
+  sdk: ^3.9.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.9
+
+  # State management
+  provider: ^6.1.1
+
+  # Navigation
+  go_router: ^17.2.0
+
+  # UI components
+  flutter_svg: ^2.2.4
+
+  # Firebase
+  firebase_core: ^4.6.0
+  firebase_auth: ^6.3.0
+  cloud_firestore: ^6.2.0
+  cloud_functions: ^6.1.0
+  firebase_remote_config: ^6.3.0
+  firebase_analytics: ^12.2.0
+  firebase_crashlytics: ^5.1.0
+  google_sign_in: ^7.2.0
+  sign_in_with_apple: ^7.0.1
+
+  # OpenAI
+  http: ^1.6.0
+
+  # In-App Purchases (RevenueCat)
+  purchases_flutter: ^9.16.0
+  shared_preferences: ^2.5.5
+
+  # Push Notifications (OneSignal)
+  onesignal_flutter: ^5.5.0
+
+  # Wake lock — keep screen on while app is open
+  wakelock_plus: ^1.2.10
+
+  # URL Launcher
+  url_launcher: ^6.3.1
+
+  # Share
+  share_plus: ^12.0.2
+
+  # Image Picker
+  image_picker: ^1.0.7
+  path_provider: ^2.1.2
+  file_picker: ^10.3.10
+
+  # Audio recording
+  record: ^6.2.0
+  permission_handler: ^12.0.1
+  just_audio: ^0.10.5
+  
+  # Localization
+  flutter_localizations:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^6.0.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/to/resolution-aware-images
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/to/asset-from-package
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: fonts/Roboto-Regular.ttf
+        - asset: fonts/Roboto-Medium.ttf
+          weight: 500
+        - asset: fonts/Roboto-Bold.ttf
+          weight: 700
+    - family: Montserrat
+      fonts:
+        - asset: fonts/Montserrat-Thin.ttf
+          weight: 100
+        - asset: fonts/Montserrat-ExtraLight.ttf
+          weight: 200
+        - asset: fonts/Montserrat-Light.ttf
+          weight: 300
+        - asset: fonts/Montserrat-Regular.ttf
+          weight: 400
+        - asset: fonts/Montserrat-Medium.ttf
+          weight: 500
+        - asset: fonts/Montserrat-SemiBold.ttf
+          weight: 600
+        - asset: fonts/Montserrat-Bold.ttf
+          weight: 700
+        - asset: fonts/Montserrat-ExtraBold.ttf
+          weight: 800
+        - asset: fonts/Montserrat-Black.ttf
+          weight: 900
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/to/font-from-package

@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./gradlew assembleDebug:*)",
+      "Bash(flutter build:*)",
+      "Bash(flutter run:*)",
+      "Bash(bash:*)",
+      "Bash(flutter clean:*)",
+      "Bash(java:*)",
+      "Bash(JAVA_HOME=/opt/homebrew/Cellar/openjdk@17/17.0.17/libexec/openjdk.jdk/Contents/Home flutter build:*)",
+      "Bash(JAVA_HOME=/opt/homebrew/Cellar/openjdk@17/17.0.17/libexec/openjdk.jdk/Contents/Home bash:*)",
+      "Bash(flutter config:*)",
+      "Bash(xattr:*)",
+      "Bash(keytool:*)",
+      "Bash(dart pub:*)",
+      "Bash(export:*)",
+      "Bash(npx firebase:*)",
+      "Bash(npm install:*)",
+      "Bash(firebase:*)",
+      "Bash(gem install:*)",
+      "Bash(flutter pub:*)",
+      "Bash(grep -n \"canceled\\\\|GoogleSignInException\" ~/.pub-cache/hosted/pub.dev/google_sign_in-7.2.0/lib/*.dart)",
+      "Bash(./gradlew :file_picker:compileDebugKotlin)",
+      "Bash(./gradlew :file_picker:tasks)",
+      "Bash(./gradlew :file_picker:compileDebugSources)",
+      "Bash(./gradlew :app:compileDebugJavaWithJavac)",
+      "Bash(./gradlew :app:compileDebugJavaWithJavac --info)"
+    ]
+  }
+}

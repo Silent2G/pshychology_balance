@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "210836512724",
+    "project_id": "ai-psychology-balance",
+    "storage_bucket": "ai-psychology-balance.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:210836512724:android:5aef0b82f682d4a8e54041",
+        "android_client_info": {
+          "package_name": "com.aipsychologybalance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "210836512724-b0f71btcirlbmnfb0kn78gu82rqjgdmh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aipsychologybalance",
+            "certificate_hash": "552e8b2bf9ac37268ccb6fa988292505fd9bca64"
+          }
+        },
+        {
+          "client_id": "210836512724-rar9l4a76fuajtovd8esnm2bj56alm6n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aipsychologybalance",
+            "certificate_hash": "53a0007ec7b56c43449601bd9b1a5817d413b595"
+          }
+        },
+        {
+          "client_id": "210836512724-6e42m03ig2o37kc41ielps7rooc1ic07.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_38TDHp1DhpBo9gaZG-1YXeczL9g5q7M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "210836512724-6e42m03ig2o37kc41ielps7rooc1ic07.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "210836512724-8pk1ikmrg78ev7dl2d17a48bjk5hvhdc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.aipsychologybalance"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

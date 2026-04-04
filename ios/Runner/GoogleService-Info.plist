@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>210836512724-8pk1ikmrg78ev7dl2d17a48bjk5hvhdc.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.210836512724-8pk1ikmrg78ev7dl2d17a48bjk5hvhdc</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>210836512724-b0f71btcirlbmnfb0kn78gu82rqjgdmh.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBToBLBd_q_1VqkAUp7ZXwYlYrpHhvLb4U</string>
+	<key>GCM_SENDER_ID</key>
+	<string>210836512724</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.aipsychologybalance</string>
+	<key>PROJECT_ID</key>
+	<string>ai-psychology-balance</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ai-psychology-balance.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:210836512724:ios:5aa61e34647ba844e54041</string>
+</dict>
+</plist>
