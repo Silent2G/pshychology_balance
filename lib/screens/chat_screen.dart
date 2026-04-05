@@ -692,41 +692,41 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     }
   }
 
-  void _showAttachmentOptions() {
-    final localizations = AppLocalizations.of(context)!;
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(20),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.image, color: Color(0xFFBC91DB)),
-              title: Text(localizations.image),
-              onTap: () {
-                Navigator.pop(context);
-                _pickImage();
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.insert_drive_file, color: Color(0xFFBC91DB)),
-              title: Text(localizations.file),
-              onTap: () {
-                Navigator.pop(context);
-                _pickFile();
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  // void _showAttachmentOptions() {
+  //   final localizations = AppLocalizations.of(context)!;
+  //   showModalBottomSheet(
+  //     context: context,
+  //     backgroundColor: Colors.transparent,
+  //     builder: (context) => Container(
+  //       padding: const EdgeInsets.all(20),
+  //       decoration: const BoxDecoration(
+  //         color: Colors.white,
+  //         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+  //       ),
+  //       child: Column(
+  //         mainAxisSize: MainAxisSize.min,
+  //         children: [
+  //           ListTile(
+  //             leading: const Icon(Icons.image, color: Color(0xFFBC91DB)),
+  //             title: Text(localizations.image),
+  //             onTap: () {
+  //               Navigator.pop(context);
+  //               _pickImage();
+  //             },
+  //           ),
+  //           ListTile(
+  //             leading: const Icon(Icons.insert_drive_file, color: Color(0xFFBC91DB)),
+  //             title: Text(localizations.file),
+  //             onTap: () {
+  //               Navigator.pop(context);
+  //               _pickFile();
+  //             },
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Future<void> _pickImage() async {
     try {

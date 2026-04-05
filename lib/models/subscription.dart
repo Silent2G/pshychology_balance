@@ -84,7 +84,7 @@ class SubscriptionPlans {
       'Пріоритетна підтримка',
     ],
     appleProductId: 'premium_monthly',
-    googleProductId: 'premium_monthly',
+    googleProductId: 'psypremium:premium-monthly',
     packageId: '\$rc_monthly', // Package ID from RevenueCat Dashboard
   );
 
@@ -101,7 +101,7 @@ class SubscriptionPlans {
       'Персональний план розвитку',
     ],
     appleProductId: 'premium_6_month',
-    googleProductId: 'premium_6_month',
+    googleProductId: 'psypremium:premium-6-month',
     packageId: '\$rc_six_month', // Package ID from RevenueCat Dashboard
   );
 
@@ -120,7 +120,7 @@ class SubscriptionPlans {
     ],
     isPopular: true,
     appleProductId: 'premium_annual',
-    googleProductId: 'premium_annual',
+    googleProductId: 'psypremium:premium-annual',
     packageId: '\$rc_annual', // Package ID from RevenueCat Dashboard
   );
 
