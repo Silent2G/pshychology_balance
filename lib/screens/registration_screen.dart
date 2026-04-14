@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/common_header.dart';
 import '../l10n/app_localizations.dart';
@@ -417,7 +418,40 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
                     ),
 
-                    SizedBox(height: MediaQuery.of(context).padding.bottom),
+                    SizedBox(height: screenHeight * 0.02),
+                    GestureDetector(
+                      onTap: () async {
+                        final url = Uri.parse('https://www.termsfeed.com/live/00f9c6a6-b887-4fef-bcc9-1df2bd2aa00d');
+                        if (await canLaunchUrl(url)) {
+                          await launchUrl(url, mode: LaunchMode.externalApplication);
+                        }
+                      },
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w400,
+                            fontSize: screenWidth * 0.037,
+                            height: 1.25,
+                            color: const Color(0xFF888888),
+                          ),
+                          children: [
+                            TextSpan(text: '${localizations.agreeToPrivacyPolicy} '),
+                            TextSpan(
+                              text: localizations.privacyPolicy,
+                              style: const TextStyle(
+                                color: Color(0xFFBC91DB),
+                                fontWeight: FontWeight.w600,
+                                decoration: TextDecoration.underline,
+                                decorationColor: Color(0xFFBC91DB),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).padding.bottom + screenHeight * 0.02),
                   ],
                 ),
               ),

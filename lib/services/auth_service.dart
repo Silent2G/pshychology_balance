@@ -2,8 +2,6 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:flutter/foundation.dart' show defaultTargetPlatform, TargetPlatform;
-import '../firebase_options.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -13,11 +11,7 @@ class AuthService {
 
   Future<void> _ensureGoogleSignInInitialized() async {
     if (_googleSignInInitialized) return;
-    await GoogleSignIn.instance.initialize(
-      serverClientId: defaultTargetPlatform == TargetPlatform.iOS
-          ? DefaultFirebaseOptions.ios.iosClientId
-          : null,
-    );
+    await GoogleSignIn.instance.initialize();
     _googleSignInInitialized = true;
   }
 

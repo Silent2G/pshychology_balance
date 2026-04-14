@@ -1726,6 +1726,23 @@ class AppLocalizations {
     }
   }
 
+  String get agreeToPrivacyPolicy {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Продовжуючи, ви погоджуєтесь з нашою';
+      case 'en':
+        return 'By continuing, you agree to our';
+      case 'es':
+        return 'Al continuar, aceptas nuestra';
+      case 'hi':
+        return 'जारी रखकर, आप हमारी सहमति देते हैं';
+      case 'zh':
+        return '继续即表示您同意我们的';
+      default:
+        return 'Продовжуючи, ви погоджуєтесь з нашою';
+    }
+  }
+
   String get support {
     switch (locale.languageCode) {
       case 'uk':
