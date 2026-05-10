@@ -2,9 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-<key>com.apple.developer.applesignin</key>
-	<array>
-		<string>Default</string>
-	</array>
+	<key>method</key>
+	<string>app-store-connect</string>
+	<key>teamID</key>
+	<string>738HMYQZS8</string>
+	<key>uploadSymbols</key>
+	<false/>
+	<key>uploadBitcode</key>
+	<false/>
 </dict>
 </plist>

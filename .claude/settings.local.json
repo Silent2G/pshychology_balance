@@ -26,7 +26,11 @@
       "Bash(./gradlew :app:compileDebugJavaWithJavac)",
       "Bash(./gradlew :app:compileDebugJavaWithJavac --info)",
       "Bash(grep -r \"team\\\\|TEAM\\\\|provisioning\\\\|PROVISIONING\\\\|signing\\\\|SIGNING\\\\|certificate\\\\|CERTIFICATE\" /Users/appel/Development/ai_psychology_balance/ios/*.pbxproj)",
-      "Bash(grep -r \"email\\\\|Email\\\\|endpoint\\\\|host\\\\|url\\\\|URL\\\\|baseUrl\" /Users/appel/Development/ai_psychology_balance/lib/services/*.dart)"
+      "Bash(grep -r \"email\\\\|Email\\\\|endpoint\\\\|host\\\\|url\\\\|URL\\\\|baseUrl\" /Users/appel/Development/ai_psychology_balance/lib/services/*.dart)",
+      "Bash(xargs cat *)",
+      "Bash(flutter analyze *)",
+      "Bash(xcodebuild -exportArchive -archivePath \"/Users/appel/Library/Developer/Xcode/Archives/2026-04-27/Runner 27.04.2026, 01.23.xcarchive\" -exportOptionsPlist \"/Users/appel/Development/ai_psychology_balance/ios/ExportOptions.plist\" -exportPath \"/Users/appel/Desktop/AppExport\")",
+      "Bash(xcrun altool *)"
     ]
   }
 }

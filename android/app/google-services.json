@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "210836512724-kk4ol3ksfafl8ut4bdr7bih3m3cfe6fs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aipsychologybalance",
+            "certificate_hash": "1c5e32b76f3e5e3f4027360fc49adcfb09f9000a"
+          }
+        },
+        {
           "client_id": "210836512724-rar9l4a76fuajtovd8esnm2bj56alm6n.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

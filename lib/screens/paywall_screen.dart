@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:io';
 import 'dart:ui' as ui;
 import '../widgets/common_header.dart';
@@ -64,6 +65,50 @@ class _PaywallScreenState extends State<PaywallScreen> {
       if (mounted) {
         setState(() => _isLoading = false);
       }
+    }
+  }
+
+  Future<void> _handleRestore() async {
+    if (_isProcessing) return;
+    setState(() => _isProcessing = true);
+
+    try {
+      await _subscriptionService.restorePurchases();
+      final subscriptionProvider = Provider.of<SubscriptionProvider>(context, listen: false);
+      await subscriptionProvider.refreshStatus();
+
+      if (!mounted) return;
+      final localizations = AppLocalizations.of(context)!;
+
+      if (subscriptionProvider.isPremium) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(localizations.restoreSuccess), backgroundColor: Colors.green),
+        );
+        if (widget.onSubscribed != null) {
+          widget.onSubscribed!();
+        } else {
+          Navigator.of(context).pop();
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(localizations.restoreNoSubscription)),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isProcessing = false);
+    }
+  }
+
+  Future<void> _openPrivacyPolicy() async {
+    final url = Uri.parse('https://www.termsfeed.com/live/00f9c6a6-b887-4fef-bcc9-1df2bd2aa00d');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
     }
   }
 
@@ -340,7 +385,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                   left: screenWidth * 0.043,
                   right: screenWidth * 0.043,
                   top: screenHeight * 0.012,
-                  bottom: screenHeight * 0.024, // Bottom spacing
+                  bottom: screenHeight * 0.008,
                 ),
                 child: GestureDetector(
                   onTap: (_isProcessing || !_pricesLoaded) ? null : _handlePurchase,
@@ -367,10 +412,68 @@ class _PaywallScreenState extends State<PaywallScreen> {
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w700,
                                 fontSize: 16,
-                                height: 1.25, // 20px / 16px
+                                height: 1.25,
                                 color: Color(0xFFFFFFFF),
                               ),
                             ),
+                    ),
+                  ),
+                ),
+              ),
+              // Restore purchases button
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.043),
+                child: GestureDetector(
+                  onTap: _isProcessing ? null : _handleRestore,
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: screenHeight * 0.044,
+                    child: Center(
+                      child: Text(
+                        localizations.restorePurchases,
+                        style: const TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13,
+                          height: 1.25,
+                          color: Color(0xFFBC91DB),
+                          decoration: TextDecoration.underline,
+                          decorationColor: Color(0xFFBC91DB),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              // Privacy policy link
+              Padding(
+                padding: EdgeInsets.only(
+                  left: screenWidth * 0.043,
+                  right: screenWidth * 0.043,
+                  bottom: screenHeight * 0.016,
+                ),
+                child: GestureDetector(
+                  onTap: _openPrivacyPolicy,
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      style: const TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w400,
+                        fontSize: 11,
+                        height: 1.4,
+                        color: Color(0xFF888888),
+                      ),
+                      children: [
+                        TextSpan(text: '${localizations.agreeToPrivacyPolicy} '),
+                        TextSpan(
+                          text: localizations.privacyPolicy,
+                          style: const TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: Color(0xFF888888),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

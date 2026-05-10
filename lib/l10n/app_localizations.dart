@@ -2050,6 +2050,57 @@ class AppLocalizations {
     }
   }
 
+  String get restorePurchases {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Відновити покупки';
+      case 'en':
+        return 'Restore purchases';
+      case 'es':
+        return 'Restaurar compras';
+      case 'hi':
+        return 'खरीदारी पुनर्स्थापित करें';
+      case 'zh':
+        return '恢复购买';
+      default:
+        return 'Відновити покупки';
+    }
+  }
+
+  String get restoreSuccess {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Підписку успішно відновлено!';
+      case 'en':
+        return 'Subscription successfully restored!';
+      case 'es':
+        return '¡Suscripción restaurada con éxito!';
+      case 'hi':
+        return 'सदस्यता सफलतापूर्वक पुनर्स्थापित की गई!';
+      case 'zh':
+        return '订阅已成功恢复！';
+      default:
+        return 'Підписку успішно відновлено!';
+    }
+  }
+
+  String get restoreNoSubscription {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Активних підписок не знайдено';
+      case 'en':
+        return 'No active subscriptions found';
+      case 'es':
+        return 'No se encontraron suscripciones activas';
+      case 'hi':
+        return 'कोई सक्रिय सदस्यता नहीं मिली';
+      case 'zh':
+        return '未找到有效订阅';
+      default:
+        return 'Активних підписок не знайдено';
+    }
+  }
+
   String get image {
     switch (locale.languageCode) {
       case 'uk':
@@ -2214,7 +2265,11 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
 
   @override
   Future<AppLocalizations> load(Locale locale) async {
-    return AppLocalizations(locale);
+    final supported = ['uk', 'en', 'es', 'hi', 'zh'];
+    final effectiveLocale = supported.contains(locale.languageCode)
+        ? locale
+        : const Locale('en');
+    return AppLocalizations(effectiveLocale);
   }
 
   @override
