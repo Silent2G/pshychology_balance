@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -6,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'dart:io';
 import 'dart:ui' as ui;
 import '../widgets/common_header.dart';
+import '../constants/legal_links.dart';
 import '../models/subscription.dart';
 import '../services/subscription_service.dart';
 import '../providers/subscription_provider.dart';
@@ -106,7 +108,14 @@ class _PaywallScreenState extends State<PaywallScreen> {
   }
 
   Future<void> _openPrivacyPolicy() async {
-    final url = Uri.parse('https://www.termsfeed.com/live/00f9c6a6-b887-4fef-bcc9-1df2bd2aa00d');
+    final url = Uri.parse(LegalLinks.privacyPolicyUrl);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    }
+  }
+
+  Future<void> _openTermsOfUse() async {
+    final url = Uri.parse(LegalLinks.termsOfUseUrl);
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     }
@@ -445,36 +454,43 @@ class _PaywallScreenState extends State<PaywallScreen> {
                   ),
                 ),
               ),
-              // Privacy policy link
+              // Privacy policy + Terms of Use (EULA) links
               Padding(
                 padding: EdgeInsets.only(
                   left: screenWidth * 0.043,
                   right: screenWidth * 0.043,
                   bottom: screenHeight * 0.016,
                 ),
-                child: GestureDetector(
-                  onTap: _openPrivacyPolicy,
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      style: const TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w400,
-                        fontSize: 11,
-                        height: 1.4,
-                        color: Color(0xFF888888),
-                      ),
-                      children: [
-                        TextSpan(text: '${localizations.agreeToPrivacyPolicy} '),
-                        TextSpan(
-                          text: localizations.privacyPolicy,
-                          style: const TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: Color(0xFF888888),
-                          ),
-                        ),
-                      ],
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    style: const TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w400,
+                      fontSize: 11,
+                      height: 1.4,
+                      color: Color(0xFF888888),
                     ),
+                    children: [
+                      TextSpan(text: '${localizations.agreeToPrivacyPolicy} '),
+                      TextSpan(
+                        text: localizations.privacyPolicy,
+                        style: const TextStyle(
+                          decoration: TextDecoration.underline,
+                          color: Color(0xFF888888),
+                        ),
+                        recognizer: TapGestureRecognizer()..onTap = _openPrivacyPolicy,
+                      ),
+                      const TextSpan(text: '  •  '),
+                      TextSpan(
+                        text: localizations.termsOfUse,
+                        style: const TextStyle(
+                          decoration: TextDecoration.underline,
+                          color: Color(0xFF888888),
+                        ),
+                        recognizer: TapGestureRecognizer()..onTap = _openTermsOfUse,
+                      ),
+                    ],
                   ),
                 ),
               ),

@@ -1760,6 +1760,91 @@ class AppLocalizations {
     }
   }
 
+  String get termsOfUse {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Умови використання';
+      case 'en':
+        return 'Terms of Use';
+      case 'es':
+        return 'Términos de uso';
+      case 'hi':
+        return 'उपयोग की शर्तें';
+      case 'zh':
+        return '使用条款';
+      default:
+        return 'Умови використання';
+    }
+  }
+
+  String get aiConsentTitle {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Обробка даних ШІ';
+      case 'en':
+        return 'AI Data Processing';
+      case 'es':
+        return 'Procesamiento de datos por IA';
+      case 'hi':
+        return 'एआई डेटा प्रोसेसिंग';
+      case 'zh':
+        return 'AI 数据处理';
+      default:
+        return 'Обробка даних ШІ';
+    }
+  }
+
+  String get aiConsentMessage {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Щоб надавати відповіді ШІ-психолога та аналізувати ваші тести, ми надсилаємо ваші повідомлення, голосові записи та відповіді на тести стороннього сервісу OpenAI (OpenAI, L.L.C., США) для обробки. Ваші дані не використовуються для реклами. Натискаючи «Погоджуюсь», ви даєте дозвіл на передачу цих даних OpenAI. Докладніше — у Політиці конфіденційності.';
+      case 'en':
+        return 'To provide AI psychologist responses and analyze your tests, we send your messages, voice recordings and test answers to the third-party service OpenAI (OpenAI, L.L.C., USA) for processing. Your data is not used for advertising. By tapping "Agree", you give permission to share this data with OpenAI. See the Privacy Policy for details.';
+      case 'es':
+        return 'Para ofrecer respuestas del psicólogo de IA y analizar tus tests, enviamos tus mensajes, grabaciones de voz y respuestas a OpenAI (OpenAI, L.L.C., EE. UU.), un servicio externo, para su procesamiento. Tus datos no se usan para publicidad. Al tocar «Aceptar», autorizas compartir estos datos con OpenAI. Consulta la Política de privacidad para más detalles.';
+      case 'hi':
+        return 'एआई मनोवैज्ञानिक उत्तर देने और आपके परीक्षणों का विश्लेषण करने के लिए, हम आपके संदेश, वॉइस रिकॉर्डिंग और परीक्षण उत्तर तीसरे पक्ष की सेवा OpenAI (OpenAI, L.L.C., यूएसए) को प्रसंस्करण हेतु भेजते हैं। आपके डेटा का उपयोग विज्ञापन के लिए नहीं किया जाता। «सहमत» पर टैप करके आप यह डेटा OpenAI के साथ साझा करने की अनुमति देते हैं। विवरण के लिए गोपनीयता नीति देखें।';
+      case 'zh':
+        return '为了提供 AI 心理咨询回复并分析您的测试，我们会将您的消息、语音录音和测试答案发送给第三方服务 OpenAI（OpenAI, L.L.C.，美国）进行处理。您的数据不会用于广告。点击"同意"即表示您允许与 OpenAI 共享这些数据。详情请参阅隐私政策。';
+      default:
+        return 'Щоб надавати відповіді ШІ-психолога та аналізувати ваші тести, ми надсилаємо ваші повідомлення, голосові записи та відповіді на тести стороннього сервісу OpenAI (OpenAI, L.L.C., США) для обробки. Ваші дані не використовуються для реклами. Натискаючи «Погоджуюсь», ви даєте дозвіл на передачу цих даних OpenAI. Докладніше — у Політиці конфіденційності.';
+    }
+  }
+
+  String get aiConsentAgree {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Погоджуюсь';
+      case 'en':
+        return 'Agree';
+      case 'es':
+        return 'Aceptar';
+      case 'hi':
+        return 'सहमत';
+      case 'zh':
+        return '同意';
+      default:
+        return 'Погоджуюсь';
+    }
+  }
+
+  String get aiConsentDecline {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Відхилити';
+      case 'en':
+        return 'Decline';
+      case 'es':
+        return 'Rechazar';
+      case 'hi':
+        return 'अस्वीकार';
+      case 'zh':
+        return '拒绝';
+      default:
+        return 'Відхилити';
+    }
+  }
+
   String get logout {
     switch (locale.languageCode) {
       case 'uk':

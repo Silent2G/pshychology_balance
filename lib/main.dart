@@ -19,6 +19,7 @@ import 'screens/navigation_screen.dart';
 import 'screens/chat_screen.dart';
 import 'screens/session_complete_screen.dart';
 import 'screens/paywall_screen.dart';
+import 'widgets/ai_consent_dialog.dart';
 import 'firebase_options.dart';
 import 'services/openai_service.dart';
 import 'services/firestore_service.dart';
@@ -273,8 +274,13 @@ class _AppNavigatorState extends State<AppNavigator> {
   }
 
   /// Navigate to results screen after last question
-  void _proceedToResults() {
+  void _proceedToResults() async {
     print('Переходимо до результатів. Кількість відповідей: ${_testAnswers.length}');
+
+    // Required by App Store Guideline 5.1.1(i)/5.1.2(i): obtain consent before
+    // sending the user's test answers to the third-party AI service (OpenAI).
+    final consented = await ensureAiConsent(context);
+    if (!consented || !mounted) return;
 
     // Set loading state before navigation
     final localizations = AppLocalizations.of(context);

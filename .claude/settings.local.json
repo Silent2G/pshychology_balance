@@ -30,7 +30,21 @@
       "Bash(xargs cat *)",
       "Bash(flutter analyze *)",
       "Bash(xcodebuild -exportArchive -archivePath \"/Users/appel/Library/Developer/Xcode/Archives/2026-04-27/Runner 27.04.2026, 01.23.xcarchive\" -exportOptionsPlist \"/Users/appel/Development/ai_psychology_balance/ios/ExportOptions.plist\" -exportPath \"/Users/appel/Desktop/AppExport\")",
-      "Bash(xcrun altool *)"
+      "Bash(xcrun altool *)",
+      "Bash(flutter --version)",
+      "Bash(awk 'NR>=290 && NR<=335 && /Future|void|async/{print NR\": \"$0}' lib/main.dart)",
+      "Bash(security find-identity *)",
+      "Bash(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" build/ios/iphoneos/Runner.app/Info.plist)",
+      "Bash(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" build/ios/iphoneos/Runner.app/Info.plist)",
+      "Bash(pod install *)",
+      "Bash(curl -s -o /dev/null -w \"privacy.html → %{http_code}\\\\n\" https://ai-psychology-balance.web.app/privacy.html)",
+      "Bash(curl -s -o /dev/null -w \"root → %{http_code}\\\\n\" https://ai-psychology-balance.web.app/)",
+      "Bash(curl -s https://ai-psychology-balance.web.app/privacy.html)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} | %{size_download} bytes | redirect: %{redirect_url}\\\\n\" https://ai-psychology-balance.web.app/privacy.html)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} | %{size_download} bytes\\\\n\" https://ai-psychology-balance.web.app/)",
+      "Bash(awk '/Widget _buildPlanCard/,/^  }$/' lib/screens/paywall_screen.dart)",
+      "Bash(git add *)",
+      "Bash(git reset *)"
     ]
   }
 }

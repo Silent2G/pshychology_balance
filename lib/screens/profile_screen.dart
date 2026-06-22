@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/common_header.dart';
 import '../widgets/language_dialog.dart';
+import '../constants/legal_links.dart';
 import '../providers/auth_provider.dart';
 import '../services/firestore_service.dart';
 import '../l10n/app_localizations.dart';
@@ -271,6 +272,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     SizedBox(height: screenHeight * 0.012),
+                    // Terms of Use (EULA)
+                    GestureDetector(
+                      onTap: () => _openTermsOfUse(context),
+                      child: _buildMenuItem(
+                        context,
+                        localizations.termsOfUse,
+                        'assets/ic_policy.svg',
+                        showArrow: true,
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.012),
                     // Support
                     GestureDetector(
                       onTap: () => _openSupportEmail(context),
@@ -380,7 +392,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _openPrivacyPolicy(BuildContext context) async {
     final localizations = AppLocalizations.of(context)!;
-    final url = Uri.parse('https://www.termsfeed.com/live/00f9c6a6-b887-4fef-bcc9-1df2bd2aa00d');
+    final url = Uri.parse(LegalLinks.privacyPolicyUrl);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(localizations.failedToOpenLink)));
+      }
+    }
+  }
+
+  Future<void> _openTermsOfUse(BuildContext context) async {
+    final localizations = AppLocalizations.of(context)!;
+    final url = Uri.parse(LegalLinks.termsOfUseUrl);
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     } else {

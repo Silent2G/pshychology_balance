@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/common_header.dart';
+import '../constants/legal_links.dart';
 import '../l10n/app_localizations.dart';
 import 'password_recovery_screen.dart';
 
@@ -421,7 +422,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     SizedBox(height: screenHeight * 0.02),
                     GestureDetector(
                       onTap: () async {
-                        final url = Uri.parse('https://www.termsfeed.com/live/00f9c6a6-b887-4fef-bcc9-1df2bd2aa00d');
+                        final url = Uri.parse(LegalLinks.privacyPolicyUrl);
                         if (await canLaunchUrl(url)) {
                           await launchUrl(url, mode: LaunchMode.externalApplication);
                         }

@@ -14,6 +14,7 @@ import '../services/firestore_service.dart';
 import '../providers/auth_provider.dart';
 import '../models/chat_session.dart' as models;
 import '../widgets/common_header.dart';
+import '../widgets/ai_consent_dialog.dart';
 import '../l10n/app_localizations.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -53,7 +54,17 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _typingAnimationController = AnimationController(duration: const Duration(milliseconds: 1500), vsync: this);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _ensureAiConsent());
     _initializeChat();
+  }
+
+  /// Required by App Store Guideline 5.1.1(i)/5.1.2(i): the user must consent
+  /// before any data is sent to the third-party AI service (OpenAI).
+  Future<void> _ensureAiConsent() async {
+    final agreed = await ensureAiConsent(context);
+    if (!agreed && mounted) {
+      Navigator.of(context).maybePop();
+    }
   }
 
   void _initializeChat() async {
