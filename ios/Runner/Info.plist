@@ -43,6 +43,8 @@
 	<string>Для запису голосових повідомлень</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Для вибору фото профілю</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Місцезнаходження використовується для надсилання релевантних сповіщень</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
