@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -29,11 +31,21 @@ import 'services/subscription_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Firebase is required for the app's providers, so init it up front — but
+  // never let a failure here keep the app from launching.
+  bool firebaseReady = false;
+  try {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    firebaseReady = true;
+  } catch (e) {
+    debugPrint('Firebase init failed: $e');
+  }
+
   WakelockPlus.enable();
 
   // Crashlytics — catch all Flutter + async errors in release mode
-  if (!kDebugMode) {
+  if (firebaseReady && !kDebugMode) {
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
     PlatformDispatcher.instance.onError = (error, stack) {
       FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
@@ -41,19 +53,19 @@ void main() async {
     };
   }
 
-  // Initialize Remote Config
-  final remoteConfigService = RemoteConfigService();
-  await remoteConfigService.initialize();
-
-  // Initialize OneSignal
-  final oneSignalService = OneSignalService();
-  await oneSignalService.initialize();
-
-  // Initialize RevenueCat
-  final subscriptionService = SubscriptionService();
-  await subscriptionService.initialize();
-
+  // Render the UI immediately. The services below make network calls (Remote
+  // Config fetch, RevenueCat, OneSignal permission prompt) that can be slow or
+  // blocked in restricted environments (e.g. store review), which would leave
+  // the app stuck on a blank screen if awaited before runApp(). They all have
+  // safe fallbacks — Remote Config → default values, RevenueCat → cached
+  // status, OneSignal → push only — so we initialize them in the background.
   runApp(const MyApp());
+
+  if (firebaseReady) {
+    unawaited(RemoteConfigService().initialize());
+    unawaited(SubscriptionService().initialize());
+  }
+  unawaited(OneSignalService().initialize());
 }
 
 class MyApp extends StatelessWidget {
