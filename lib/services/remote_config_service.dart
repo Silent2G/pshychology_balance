@@ -14,8 +14,9 @@ class RemoteConfigService {
   static const String _chatSystemPromptKey = 'chat_system_prompt';
 
   // Default values (fallback)
-  static const String _defaultOpenaiApiKey =
-      'REDACTED-OPENAI-KEY';
+  // The OpenAI API key is NOT hardcoded — it is provided at runtime via
+  // Firebase Remote Config (key: openai_api_key).
+  static const String _defaultOpenaiApiKey = '';
   static const String _defaultTestSystemPrompt = '''Ти професійний психолог з 15-річним досвідом роботи. 
 Твоя задача - проаналізувати результати психологічного тесту на самопізнання та надати детальний, емпатичний та корисний аналіз.
 
