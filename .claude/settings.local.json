@@ -44,7 +44,13 @@
       "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} | %{size_download} bytes\\\\n\" https://ai-psychology-balance.web.app/)",
       "Bash(awk '/Widget _buildPlanCard/,/^  }$/' lib/screens/paywall_screen.dart)",
       "Bash(git add *)",
-      "Bash(git reset *)"
+      "Bash(git reset *)",
+      "Bash(git commit -q -m ' *)",
+      "Bash(defaults read *)",
+      "Bash(curl *)",
+      "Bash(open build/ios/archive/Runner.xcarchive)",
+      "Bash(open build/app/outputs/bundle/release/)",
+      "Bash(grep -niA2 \"delet\\\\|remove\\\\|your rights\\\\|request\\\\|erase\\\\|account\" privacy_site/privacy.html)"
     ]
   }
 }
