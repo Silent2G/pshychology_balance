@@ -558,17 +558,20 @@ class OpenAIService {
 
       // Add parameters
       request.fields['model'] = 'whisper-1';
-      // Specify language for better accuracy
-      if (languageCode != 'uk') {
-        request.fields['language'] = languageCode;
-      }
+      // Always pass the language hint (including 'uk'). Without it Whisper
+      // auto-detects the language, which on short or noisy clips often misfires
+      // and returns garbled or hallucinated text — the AI then treats the
+      // message as off-topic and refuses.
+      request.fields['language'] = languageCode;
+      // Low temperature reduces Whisper hallucinations on near-silent audio.
+      request.fields['temperature'] = '0';
 
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
 
       if (response.statusCode == 200) {
         final data = jsonDecode(utf8.decode(response.bodyBytes));
-        return data['text'] ?? '';
+        return (data['text'] ?? '').toString().trim();
       } else {
         throw Exception('Whisper API error: ${response.statusCode} - ${response.body}');
       }

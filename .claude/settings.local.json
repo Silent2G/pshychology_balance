@@ -50,7 +50,16 @@
       "Bash(curl *)",
       "Bash(open build/ios/archive/Runner.xcarchive)",
       "Bash(open build/app/outputs/bundle/release/)",
-      "Bash(grep -niA2 \"delet\\\\|remove\\\\|your rights\\\\|request\\\\|erase\\\\|account\" privacy_site/privacy.html)"
+      "Bash(grep -niA2 \"delet\\\\|remove\\\\|your rights\\\\|request\\\\|erase\\\\|account\" privacy_site/privacy.html)",
+      "Bash(gh repo *)",
+      "Bash(perl -i -pe 's/sk-proj-[A-Za-z0-9_-]+//g' lib/services/remote_config_service.dart)",
+      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --force --tree-filter ' *)",
+      "Bash(git stash *)",
+      "Bash(xargs -n1 git update-ref -d)",
+      "Bash(git reflog *)",
+      "Bash(git gc *)",
+      "Bash(git push *)",
+      "Bash(awk '/Future<String> transcribeAudio/,/^  }$/' lib/services/openai_service.dart)"
     ]
   }
 }
