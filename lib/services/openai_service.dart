@@ -10,6 +10,10 @@ class OpenAIService {
 
   String get _apiKey => _remoteConfigService.getOpenAIApiKey();
 
+  // Chat model comes from Firebase Remote Config (key: chat_model) so it can be
+  // changed without shipping a new app release.
+  String get _chatModel => _remoteConfigService.getChatModel();
+
   // Test results analysis
   Future<Map<String, dynamic>> analyzeTestResults(List<int> answers, String languageCode) async {
     try {
@@ -316,6 +320,66 @@ class OpenAIService {
     return basePrompt + languageInstruction;
   }
 
+  // Newer OpenAI models (gpt-5.x, o-series) use a different Chat Completions
+  // request contract than gpt-4o/gpt-4: they expect `max_completion_tokens`
+  // instead of `max_tokens` and reject a custom `temperature`. The OpenAI
+  // Playground hides this, but our raw HTTP request must match exactly.
+  bool _isNextGenModel(String model) {
+    final m = model.toLowerCase();
+    return m.startsWith('gpt-5') ||
+        m.startsWith('gpt5') ||
+        m.startsWith('o1') ||
+        m.startsWith('o3') ||
+        m.startsWith('o4');
+  }
+
+  Map<String, dynamic> _buildChatCompletionBody(
+    String model,
+    List<Map<String, dynamic>> messages, {
+    required bool nextGen,
+  }) {
+    final body = <String, dynamic>{'model': model, 'messages': messages};
+    if (nextGen) {
+      // Newer models: token cap uses a different field and temperature is fixed.
+      body['max_completion_tokens'] = 500;
+    } else {
+      body['temperature'] = 0.8;
+      body['max_tokens'] = 500;
+    }
+    return body;
+  }
+
+  Future<http.Response> _postChatCompletion(List<Map<String, dynamic>> messages) async {
+    final headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer $_apiKey'};
+
+    // First attempt using the request format that matches the model family.
+    final bool nextGen = _isNextGenModel(_chatModel);
+    http.Response response = await http.post(
+      Uri.parse(_baseUrl),
+      headers: headers,
+      body: jsonEncode(_buildChatCompletionBody(_chatModel, messages, nextGen: nextGen)),
+    );
+
+    // If the format was wrong for this model, OpenAI returns 400 pointing at
+    // max_tokens / temperature. Retry once with the opposite format so a model
+    // switch from Firebase Remote Config can never hard-break the chat.
+    if (response.statusCode == 400) {
+      final bodyText = response.body.toLowerCase();
+      if (bodyText.contains('max_tokens') ||
+          bodyText.contains('max_completion_tokens') ||
+          bodyText.contains('temperature') ||
+          bodyText.contains('unsupported')) {
+        response = await http.post(
+          Uri.parse(_baseUrl),
+          headers: headers,
+          body: jsonEncode(_buildChatCompletionBody(_chatModel, messages, nextGen: !nextGen)),
+        );
+      }
+    }
+
+    return response;
+  }
+
   // Send chat message with image support
   Future<String> sendChatMessage(
     String message,
@@ -388,17 +452,13 @@ class OpenAIService {
         }
       }
 
-      final response = await http.post(
-        Uri.parse(_baseUrl),
-        headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $_apiKey'},
-        body: jsonEncode({'model': 'gpt-4o-mini', 'messages': messages, 'temperature': 0.8, 'max_tokens': 500}),
-      );
+      final response = await _postChatCompletion(messages);
 
       if (response.statusCode == 200) {
         final data = jsonDecode(utf8.decode(response.bodyBytes));
         return data['choices'][0]['message']['content'];
       } else {
-        throw Exception('OpenAI API error: ${response.statusCode}');
+        throw Exception('OpenAI API error: ${response.statusCode} - ${response.body}');
       }
     } catch (e) {
       throw Exception('Помилка відправки повідомлення: $e');

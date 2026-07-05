@@ -12,11 +12,16 @@ class RemoteConfigService {
   static const String _openaiApiKeyKey = 'openai_api_key';
   static const String _testSystemPromptKey = 'test_system_prompt';
   static const String _chatSystemPromptKey = 'chat_system_prompt';
+  static const String _chatModelKey = 'chat_model';
 
   // Default values (fallback)
   // The OpenAI API key is NOT hardcoded — it is provided at runtime via
   // Firebase Remote Config (key: openai_api_key).
   static const String _defaultOpenaiApiKey = '';
+  // Chat model is provided at runtime via Firebase Remote Config (key:
+  // chat_model), so it can be changed without shipping a new app release.
+  // Keep this fallback on a known-good, always-available model.
+  static const String _defaultChatModel = 'gpt-4o-mini';
   static const String _defaultTestSystemPrompt = '''Ти професійний психолог з 15-річним досвідом роботи. 
 Твоя задача - проаналізувати результати психологічного тесту на самопізнання та надати детальний, емпатичний та корисний аналіз.
 
@@ -174,6 +179,7 @@ This rule overrides everything else.''';
         _openaiApiKeyKey: _defaultOpenaiApiKey,
         _testSystemPromptKey: _defaultTestSystemPrompt,
         _chatSystemPromptKey: _defaultChatSystemPrompt,
+        _chatModelKey: _defaultChatModel,
       });
 
       // Load values from Remote Config
@@ -207,6 +213,16 @@ This rule overrides everything else.''';
       return _defaultChatSystemPrompt;
     }
     return _remoteConfig!.getString(_chatSystemPromptKey);
+  }
+
+  String getChatModel() {
+    if (!_isInitialized || _remoteConfig == null) {
+      return _defaultChatModel;
+    }
+    final model = _remoteConfig!.getString(_chatModelKey).trim();
+    // Guard against an empty/misconfigured Remote Config value so the chat
+    // never breaks in production — fall back to the known-good default.
+    return model.isEmpty ? _defaultChatModel : model;
   }
 
   Future<void> fetchAndActivate() async {
