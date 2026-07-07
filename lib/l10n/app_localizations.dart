@@ -1023,6 +1023,193 @@ class AppLocalizations {
     }
   }
 
+  String get yourSubscription {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Ваша підписка';
+      case 'en':
+        return 'Your subscription';
+      case 'es':
+        return 'Tu suscripción';
+      case 'hi':
+        return 'आपकी सदस्यता';
+      case 'zh':
+        return '您的订阅';
+      default:
+        return 'Ваша підписка';
+    }
+  }
+
+  String get statusActive {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Активна';
+      case 'en':
+        return 'Active';
+      case 'es':
+        return 'Activa';
+      case 'hi':
+        return 'सक्रिय';
+      case 'zh':
+        return '有效';
+      default:
+        return 'Активна';
+    }
+  }
+
+  String get planNameMonthly {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Місячна підписка';
+      case 'en':
+        return 'Monthly plan';
+      case 'es':
+        return 'Plan mensual';
+      case 'hi':
+        return 'मासिक योजना';
+      case 'zh':
+        return '月度套餐';
+      default:
+        return 'Місячна підписка';
+    }
+  }
+
+  String get planNameSixMonth {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Піврічна підписка';
+      case 'en':
+        return '6-month plan';
+      case 'es':
+        return 'Plan de 6 meses';
+      case 'hi':
+        return '6-महीने की योजना';
+      case 'zh':
+        return '6个月套餐';
+      default:
+        return 'Піврічна підписка';
+    }
+  }
+
+  String get planNameYearly {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Річна підписка';
+      case 'en':
+        return 'Yearly plan';
+      case 'es':
+        return 'Plan anual';
+      case 'hi':
+        return 'वार्षिक योजना';
+      case 'zh':
+        return '年度套餐';
+      default:
+        return 'Річна підписка';
+    }
+  }
+
+  String get premiumPlan {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Преміум';
+      case 'en':
+        return 'Premium';
+      case 'es':
+        return 'Premium';
+      case 'hi':
+        return 'प्रीमियम';
+      case 'zh':
+        return '高级会员';
+      default:
+        return 'Преміум';
+    }
+  }
+
+  String get activeUntil {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Діє до';
+      case 'en':
+        return 'Active until';
+      case 'es':
+        return 'Activa hasta';
+      case 'hi':
+        return 'तक सक्रिय';
+      case 'zh':
+        return '有效期至';
+      default:
+        return 'Діє до';
+    }
+  }
+
+  String daysLeft(int days) {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Залишилось днів: $days';
+      case 'en':
+        return '$days days left';
+      case 'es':
+        return '$days días restantes';
+      case 'hi':
+        return '$days दिन शेष';
+      case 'zh':
+        return '剩余 $days 天';
+      default:
+        return 'Залишилось днів: $days';
+    }
+  }
+
+  String get manageSubscription {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Керувати підпискою';
+      case 'en':
+        return 'Manage subscription';
+      case 'es':
+        return 'Gestionar suscripción';
+      case 'hi':
+        return 'सदस्यता प्रबंधित करें';
+      case 'zh':
+        return '管理订阅';
+      default:
+        return 'Керувати підпискою';
+    }
+  }
+
+  String get managedViaAppStore {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Керується через App Store';
+      case 'en':
+        return 'Managed via App Store';
+      case 'es':
+        return 'Gestionada mediante App Store';
+      case 'hi':
+        return 'App Store के माध्यम से प्रबंधित';
+      case 'zh':
+        return '通过 App Store 管理';
+      default:
+        return 'Керується через App Store';
+    }
+  }
+
+  String get managedViaGooglePlay {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Керується через Google Play';
+      case 'en':
+        return 'Managed via Google Play';
+      case 'es':
+        return 'Gestionada mediante Google Play';
+      case 'hi':
+        return 'Google Play के माध्यम से प्रबंधित';
+      case 'zh':
+        return '通过 Google Play 管理';
+      default:
+        return 'Керується через Google Play';
+    }
+  }
+
   String get continueButton {
     switch (locale.languageCode) {
       case 'uk':

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../widgets/common_header.dart';
+import '../providers/subscription_provider.dart';
 import 'paywall_screen.dart';
 import '../l10n/app_localizations.dart';
 
@@ -17,6 +20,7 @@ class SubscriptionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
+    final subscriptionProvider = context.watch<SubscriptionProvider>();
     final screenSize = MediaQuery.of(context).size;
     final screenWidth = screenSize.width;
     final screenHeight = screenSize.height;
@@ -45,7 +49,9 @@ class SubscriptionScreen extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.043), // ~16px on 375px
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
+                    children: subscriptionProvider.isPremium
+                        ? [_buildCurrentSubscriptionCard(context, localizations, subscriptionProvider)]
+                        : [
                     // Main text
                     Text(
                       localizations.subscriptionMainText,
@@ -151,6 +157,165 @@ class SubscriptionScreen extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildCurrentSubscriptionCard(
+    BuildContext context,
+    AppLocalizations l,
+    SubscriptionProvider sub,
+  ) {
+    const accent = Color(0xFFBC91DB);
+    const green = Color(0xFF3BA55D);
+    final status = sub.status;
+    final daysRemaining = sub.getDaysRemaining();
+    final managedVia = status.platform == 'google' ? l.managedViaGooglePlay : l.managedViaAppStore;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFEDE6F3), width: 1.5),
+        boxShadow: [
+          BoxShadow(color: accent.withOpacity(0.12), blurRadius: 18, offset: const Offset(0, 6)),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Title + "Active" status pill
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  l.yourSubscription,
+                  style: const TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18,
+                    color: accent,
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: green.withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(99),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(width: 8, height: 8, decoration: const BoxDecoration(color: green, shape: BoxShape.circle)),
+                    const SizedBox(width: 6),
+                    Text(
+                      l.statusActive,
+                      style: const TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                        color: green,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          // Plan name
+          Text(
+            _planName(l, status.subscriptionPlanId),
+            style: const TextStyle(
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.w700,
+              fontSize: 22,
+              color: Color(0xFF272727),
+            ),
+          ),
+          const SizedBox(height: 18),
+          const Divider(height: 1, color: Color(0xFFEDE6F3)),
+          const SizedBox(height: 16),
+          if (status.expirationDate != null)
+            _infoRow(Icons.event_available_outlined, '${l.activeUntil} ${_formatDate(status.expirationDate!)}'),
+          if (daysRemaining != null && daysRemaining >= 0) _infoRow(Icons.hourglass_bottom_outlined, l.daysLeft(daysRemaining)),
+          _infoRow(Icons.store_outlined, managedVia),
+          const SizedBox(height: 8),
+          // Manage subscription (opens native store management)
+          GestureDetector(
+            onTap: () => _openManageSubscription(status.platform),
+            child: Container(
+              width: double.infinity,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(99),
+                border: Border.all(color: accent, width: 1.5),
+              ),
+              child: Center(
+                child: Text(
+                  l.manageSubscription,
+                  style: const TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
+                    color: accent,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Map the store product id to a localized plan name.
+  String _planName(AppLocalizations l, String? productId) {
+    final id = (productId ?? '').toLowerCase();
+    if (id.contains('annual') || id.contains('year')) return l.planNameYearly;
+    if (id.contains('6') || id.contains('six')) return l.planNameSixMonth;
+    if (id.contains('month')) return l.planNameMonthly;
+    return l.premiumPlan;
+  }
+
+  String _formatDate(DateTime d) {
+    String two(int n) => n.toString().padLeft(2, '0');
+    return '${two(d.day)}.${two(d.month)}.${d.year}';
+  }
+
+  Future<void> _openManageSubscription(String? platform) async {
+    final url = platform == 'google'
+        ? 'https://play.google.com/store/account/subscriptions'
+        : 'https://apps.apple.com/account/subscriptions';
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+
+  Widget _infoRow(IconData icon, String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 14),
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: const Color(0xFFBC91DB)),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w500,
+                fontSize: 15,
+                color: Color(0xFF3A3A3A),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
