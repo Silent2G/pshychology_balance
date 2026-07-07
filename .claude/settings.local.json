@@ -59,7 +59,22 @@
       "Bash(git reflog *)",
       "Bash(git gc *)",
       "Bash(git push *)",
-      "Bash(awk '/Future<String> transcribeAudio/,/^  }$/' lib/services/openai_service.dart)"
+      "Bash(awk '/Future<String> transcribeAudio/,/^  }$/' lib/services/openai_service.dart)",
+      "Bash(git -C /Users/appel/Development/ai_psychology_balance status --short)",
+      "Bash(kill -9 14845)",
+      "Bash(timeout 30 flutter devices)",
+      "Bash(open -a Simulator)",
+      "Bash(xcrun simctl *)",
+      "Bash(grep -rn \"11.99\\\\|11,99\\\\|\\\\$11\\\\|price\\\\|Price\" lib/screens/paywall_screen.dart lib/services/subscription_service.dart lib/models/subscription.dart lib/screens/subscription_screen.dart)",
+      "Bash(plutil -p ~/Library/Developer/CoreSimulator/Devices/B82AAEED-C5DB-47E3-A413-B045DCCB87F1/data/Library/Preferences/.GlobalPreferences.plist)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('OK ->', d['choices'][0]['message']['content']\\) if 'choices' in d else print\\('ERROR ->', d.get\\('error',{}\\).get\\('code'\\), '|', d.get\\('error',{}\\).get\\('message'\\)\\)\")",
+      "Bash(rm -f /tmp/openai_key.txt)",
+      "Read(//private/tmp/**)",
+      "Bash(/usr/libexec/PlistBuddy -c Print '/Users/appel/Library/Developer/Xcode/Archives/2026-07-05/AI Psychology Balance 05-07-2026, 22.07.xcarchive/Info.plist')",
+      "Bash(gh auth *)",
+      "Bash(git checkout *)",
+      "Bash(git merge --no-ff remote-config-chat-model -m 'Merge branch '\\\\''remote-config-chat-model'\\\\'' *)",
+      "Bash(git commit -m 'Redesign Psychotype Test answer selector *)"
     ]
   }
 }
