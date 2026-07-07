@@ -1367,6 +1367,24 @@ class AppLocalizations {
     }
   }
 
+  // Clean answer labels for the psychotype test option cards (no legend prefix).
+  List<String> get answerOptionLabels {
+    switch (locale.languageCode) {
+      case 'uk':
+        return ['Зовсім не про мене', 'Скоріше ні', 'Частково', 'Повністю про мене'];
+      case 'en':
+        return ['Not about me at all', 'Rather not', 'Partially', 'Fully about me'];
+      case 'es':
+        return ['Nada sobre mí', 'Más bien no', 'Parcialmente', 'Completamente sobre mí'];
+      case 'hi':
+        return ['मेरे बारे में बिल्कुल नहीं', 'बल्कि नहीं', 'आंशिक रूप से', 'पूरी तरह से मेरे बारे में'];
+      case 'zh':
+        return ['完全不是我', '不太是', '部分', '完全是我'];
+      default:
+        return ['Зовсім не про мене', 'Скоріше ні', 'Частково', 'Повністю про мене'];
+    }
+  }
+
   // Auth and registration
   String get email {
     switch (locale.languageCode) {

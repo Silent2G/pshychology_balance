@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/common_header.dart';
+import '../widgets/mood_face.dart';
 
 class TestIntroScreen extends StatelessWidget {
   final VoidCallback? onStart;
@@ -85,25 +86,25 @@ class TestIntroScreen extends StatelessWidget {
                       Column(
                         children: [
                           _buildEmojiOption(
-                            emojiPath: 'assets/ic_emoji_1.png',
+                            level: 0,
                             text: localizations.notAboutMe,
                             screenWidth: screenWidth,
                           ),
                           SizedBox(height: screenHeight * 0.022), // 18px gap
                           _buildEmojiOption(
-                            emojiPath: 'assets/ic_emoji_2.png',
+                            level: 1,
                             text: localizations.ratherNot,
                             screenWidth: screenWidth,
                           ),
                           SizedBox(height: screenHeight * 0.022), // 18px gap
                           _buildEmojiOption(
-                            emojiPath: 'assets/ic_emoji_3.png',
+                            level: 2,
                             text: localizations.partially,
                             screenWidth: screenWidth,
                           ),
                           SizedBox(height: screenHeight * 0.022), // 18px gap
                           _buildEmojiOption(
-                            emojiPath: 'assets/ic_emoji_4.png',
+                            level: 3,
                             text: localizations.fullyAboutMe,
                             screenWidth: screenWidth,
                           ),
@@ -147,7 +148,7 @@ class TestIntroScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEmojiOption({required String emojiPath, required String text, required double screenWidth}) {
+  Widget _buildEmojiOption({required int level, required String text, required double screenWidth}) {
     return Container(
       width: double.infinity,
       height: screenWidth * 0.16, // 60px on 375px
@@ -158,12 +159,8 @@ class TestIntroScreen extends StatelessWidget {
       ),
       child: Row(
         children: [
-          SizedBox(width: screenWidth * 0.019), // 7px left padding
-          Image.asset(
-            emojiPath,
-            width: screenWidth * 0.12, // 44.88px on 375px
-            height: screenWidth * 0.12, // 44.88px on 375px
-          ),
+          SizedBox(width: screenWidth * 0.028), // ~10px left padding
+          MoodFace(level: level, size: screenWidth * 0.12), // 44.88px on 375px
           SizedBox(width: screenWidth * 0.038), // 18px gap
           Text(
             text,
