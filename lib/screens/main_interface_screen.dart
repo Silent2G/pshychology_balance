@@ -1,3 +1,4 @@
+import 'dart:ui' show ImageFilter;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../l10n/app_localizations.dart';
@@ -101,14 +102,21 @@ class MainInterfaceScreen extends StatelessWidget {
                         style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontWeight: FontWeight.w400,
-                          fontSize: screenWidth * 0.053, // ~20px on 375px
-                          height: 1.2, // 24/20
+                          fontSize: screenWidth * 0.045, // ~17px on 375px — reads as a subtitle
+                          height: 1.3,
                           color: const Color(0xFF272727),
                         ),
                       ),
                     ],
                   ),
                 ),
+
+                // Ukraine map — shown only for the Ukrainian localization,
+                // under the "Created in Ukraine during the war" tagline.
+                if (localizations.locale.languageCode == 'uk') ...[
+                  SizedBox(height: screenHeight * 0.023), // reduced gap between tagline and map
+                  _buildUkraineMap(screenWidth),
+                ],
 
                 SizedBox(
                   height: MediaQuery.of(context).padding.bottom + screenHeight * 0.1,
@@ -117,6 +125,38 @@ class MainInterfaceScreen extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildUkraineMap(double screenWidth) {
+    final width = screenWidth * 0.52;
+    return SizedBox(
+      width: width,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          // Soft golden glow behind — echoes "keep the light inside".
+          ImageFiltered(
+            imageFilter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+            child: SvgPicture.asset(
+              'assets/ukraine_map.svg',
+              width: width,
+              colorFilter: const ColorFilter.mode(Color(0x66F4C33D), BlendMode.srcIn),
+            ),
+          ),
+          // Map filled with the Ukrainian flag colours (azure over gold).
+          ShaderMask(
+            shaderCallback: (rect) => const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF3E7CD6), Color(0xFF3E7CD6), Color(0xFFF4C33D), Color(0xFFF4C33D)],
+              stops: [0.0, 0.5, 0.5, 1.0],
+            ).createShader(rect),
+            blendMode: BlendMode.srcIn,
+            child: SvgPicture.asset('assets/ukraine_map.svg', width: width),
+          ),
+        ],
       ),
     );
   }
