@@ -10,15 +10,20 @@ class ShareService {
   static const String _appStoreUrl = 'https://apps.apple.com/us/app/ai-psychology-balance/id6754576157';
   static const String _playStoreUrl = 'https://play.google.com/store/apps/details?id=com.aipsychologybalance.app';
 
-  /// Share to Facebook - use native Share sheet
-  static Future<void> shareToFacebook(String psychotype, {BuildContext? context}) async {
+  /// Share to Facebook. Facebook (and Instagram) do NOT accept pre-filled text,
+  /// so we share the result as an image when one is provided.
+  static Future<void> shareToFacebook(String psychotype, {BuildContext? context, File? image}) async {
     try {
       final text = _buildShareText(psychotype, context: context);
       final localizations = context != null ? AppLocalizations.of(context) : null;
       final subject = localizations != null
           ? '${localizations.myPsychotype}: $psychotype'
           : 'Мій психотип: $psychotype';
-      await _shareWithPosition(text, subject: subject, context: context);
+      if (image != null) {
+        await _shareImage(image, text, subject: subject, context: context);
+      } else {
+        await _shareWithPosition(text, subject: subject, context: context);
+      }
     } catch (e) {
       print('Ошибка шаринга в Facebook: $e');
     }
@@ -49,42 +54,40 @@ class ShareService {
     }
   }
 
-  /// Share to Instagram - use native Share sheet
-  static Future<void> shareToInstagram(String psychotype, {BuildContext? context}) async {
+  /// Share to Instagram. Instagram only accepts images (not text/links), so we
+  /// share the result image via the native sheet when one is provided.
+  static Future<void> shareToInstagram(String psychotype, {BuildContext? context, File? image}) async {
     try {
       final text = _buildShareText(psychotype, context: context);
-
-      // Copy text to clipboard for convenience
-      await Clipboard.setData(ClipboardData(text: text));
-
       final localizations = context != null ? AppLocalizations.of(context) : null;
       final subject = localizations != null
           ? '${localizations.myPsychotype}: $psychotype'
           : 'Мій психотип: $psychotype';
-      await _shareWithPosition(text, subject: subject, context: context);
+      if (image != null) {
+        // Caption on the clipboard so the user can paste it into their story/post.
+        await Clipboard.setData(ClipboardData(text: text));
+        await _shareImage(image, text, subject: subject, context: context);
+      } else {
+        await Clipboard.setData(ClipboardData(text: text));
+        await _shareWithPosition(text, subject: subject, context: context);
+      }
     } catch (e) {
       print('Ошибка шаринга в Instagram: $e');
     }
   }
 
-  /// Share to Telegram
+  /// Share to Telegram via the canonical t.me share link (opens the Telegram app
+  /// if installed, otherwise the web fallback — no custom scheme required).
   static Future<void> shareToTelegram(String psychotype, {BuildContext? context}) async {
     try {
-      final text = _buildShareText(psychotype, context: context);
-      final encodedText = Uri.encodeComponent(text);
-
-      // Try to open via Telegram app
-      final telegramUrl = Uri.parse('tg://msg?text=$encodedText');
-      final telegramWebUrl = Uri.parse('https://t.me/share/url?url=&text=$encodedText');
-
-      if (await canLaunchUrl(telegramUrl)) {
-        await launchUrl(telegramUrl, mode: LaunchMode.externalApplication);
-      } else if (await canLaunchUrl(telegramWebUrl)) {
-        await launchUrl(telegramWebUrl, mode: LaunchMode.externalApplication);
-      } else {
-        // If Telegram not installed, use general share
-        await _shareWithPosition(text, context: context);
-      }
+      // Message body without the trailing link (the link goes in the url= param).
+      final message = _buildShareText(psychotype, context: context, includeLink: false);
+      final shareUrl = Uri.parse(
+        'https://t.me/share/url'
+        '?url=${Uri.encodeComponent(_appStoreLink())}'
+        '&text=${Uri.encodeComponent(message)}',
+      );
+      await launchUrl(shareUrl, mode: LaunchMode.externalApplication);
     } catch (e) {
       print('Ошибка шаринга в Telegram: $e');
       // Fallback to general share
@@ -103,6 +106,22 @@ class ShareService {
       await _shareWithPosition(text, subject: subject, context: context);
     } catch (e) {
       print('Ошибка общего шаринга: $e');
+    }
+  }
+
+  /// The store link for the current platform.
+  static String _appStoreLink() => Platform.isIOS ? _appStoreUrl : _playStoreUrl;
+
+  /// Share an image (with a caption) via the native share sheet — the reliable
+  /// path for image-only platforms like Instagram and Facebook.
+  static Future<void> _shareImage(File image, String text, {String? subject, BuildContext? context}) async {
+    final files = [XFile(image.path)];
+    if (Platform.isIOS && context != null) {
+      final screenSize = MediaQuery.of(context).size;
+      final rect = Rect.fromLTWH(screenSize.width / 2 - 50, screenSize.height / 2 - 50, 100, 100);
+      await Share.shareXFiles(files, text: text, subject: subject, sharePositionOrigin: rect);
+    } else {
+      await Share.shareXFiles(files, text: text, subject: subject);
     }
   }
 
@@ -140,14 +159,14 @@ class ShareService {
     }
   }
 
-  /// Build share text
-  static String _buildShareText(String psychotype, {BuildContext? context}) {
+  /// Build share text. Set [includeLink] to false when the store link is passed
+  /// separately (e.g. the Telegram url= param) to avoid duplicating it.
+  static String _buildShareText(String psychotype, {BuildContext? context, bool includeLink = true}) {
     final localizations = context != null ? AppLocalizations.of(context) : null;
 
     // Determine language and build text
     String myPsychotypeText;
     String shareTestText;
-    String appStoreLink;
 
     if (localizations != null) {
       myPsychotypeText = localizations.myPsychotype;
@@ -158,13 +177,7 @@ class ShareService {
       shareTestText = 'Пройшов тест на самопізнання в AI Psychology Balance! 🧠✨';
     }
 
-    // Determine app store link
-    if (Platform.isIOS) {
-      appStoreLink = _appStoreUrl;
-    } else {
-      appStoreLink = _playStoreUrl;
-    }
-
-    return '$myPsychotypeText: $psychotype\n$shareTestText\n\n$appStoreLink';
+    final base = '$myPsychotypeText: $psychotype\n$shareTestText';
+    return includeLink ? '$base\n\n${_appStoreLink()}' : base;
   }
 }
