@@ -1,10 +1,14 @@
+import 'dart:io';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:path_provider/path_provider.dart';
 import '../widgets/common_header.dart';
 import '../services/share_service.dart';
 import '../l10n/app_localizations.dart';
 
-class ShareResultScreen extends StatelessWidget {
+class ShareResultScreen extends StatefulWidget {
   final String psychotype;
   final VoidCallback? onBack;
 
@@ -13,6 +17,15 @@ class ShareResultScreen extends StatelessWidget {
     required this.psychotype,
     this.onBack,
   });
+
+  @override
+  State<ShareResultScreen> createState() => _ShareResultScreenState();
+}
+
+class _ShareResultScreenState extends State<ShareResultScreen> {
+  // Wraps the result visual so it can be captured as an image for platforms
+  // that only accept images (Instagram, Facebook).
+  final GlobalKey _cardKey = GlobalKey();
 
   // Psychotype to image number mapping (1-5) - same logic as TestResultScreen
   int _getImageIndex(String psychotype) {
@@ -31,12 +44,31 @@ class ShareResultScreen extends StatelessWidget {
     }
   }
 
+  /// Capture the result card as a PNG file for image-based sharing.
+  Future<File?> _captureCard() async {
+    try {
+      final boundary = _cardKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+      if (boundary == null) return null;
+      final image = await boundary.toImage(pixelRatio: 3.0);
+      final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+      if (byteData == null) return null;
+      final dir = await getTemporaryDirectory();
+      final file = File('${dir.path}/psychotype_result.png');
+      await file.writeAsBytes(byteData.buffer.asUint8List());
+      return file;
+    } catch (e) {
+      debugPrint('Помилка захоплення зображення результату: $e');
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
     final screenSize = MediaQuery.of(context).size;
     final screenWidth = screenSize.width;
     final screenHeight = screenSize.height;
+    final psychotype = widget.psychotype;
 
     return Scaffold(
       backgroundColor: const Color(0xFFFDFDFD),
@@ -54,42 +86,58 @@ class ShareResultScreen extends StatelessWidget {
               children: [
                 // Common header with back button and logo
                 CommonHeader(
-                  onBack: onBack,
+                  onBack: widget.onBack,
                   showBackButton: true,
                 ),
                 SizedBox(height: screenHeight * 0.029),
-                // "My psychotype" header
-                Text(
-                  localizations.myPsychotype,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w500,
-                    fontSize: screenWidth * 0.053, // 20px on 375px
-                    height: 1.2,
-                    color: const Color(0xFFBC91DB),
-                  ),
-                ),
-                // Psychotype name
-                Text(
-                  psychotype.isEmpty ? localizations.analyzing : psychotype,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w500,
-                    fontSize: screenWidth * 0.053, // 20px on 375px
-                    height: 1.2,
-                    color: const Color(0xFFBC91DB),
-                  ),
-                ),
-                SizedBox(height: screenHeight * 0.03),
-                // Illustration
-                SizedBox(
-                  width: screenWidth * 0.635, // 238px on 375px
-                  height: screenWidth * 0.635,
-                  child: Image.asset(
-                    'assets/test_result_${_getImageIndex(psychotype)}.png',
-                    fit: BoxFit.contain,
+                // Result card — captured as an image when sharing to Instagram/Facebook
+                RepaintBoundary(
+                  key: _cardKey,
+                  child: Container(
+                    color: const Color(0xFFFDFDFD),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.04,
+                      vertical: screenHeight * 0.02,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // "My psychotype" header
+                        Text(
+                          localizations.myPsychotype,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w500,
+                            fontSize: screenWidth * 0.053, // 20px on 375px
+                            height: 1.2,
+                            color: const Color(0xFFBC91DB),
+                          ),
+                        ),
+                        // Psychotype name
+                        Text(
+                          psychotype.isEmpty ? localizations.analyzing : psychotype,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w500,
+                            fontSize: screenWidth * 0.053, // 20px on 375px
+                            height: 1.2,
+                            color: const Color(0xFFBC91DB),
+                          ),
+                        ),
+                        SizedBox(height: screenHeight * 0.03),
+                        // Illustration
+                        SizedBox(
+                          width: screenWidth * 0.635, // 238px on 375px
+                          height: screenWidth * 0.635,
+                          child: Image.asset(
+                            'assets/test_result_${_getImageIndex(psychotype)}.png',
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(height: screenHeight * 0.037),
@@ -110,14 +158,16 @@ class ShareResultScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Facebook
+                    // Facebook — shares the result image (Facebook ignores plain text)
                     _buildSocialButton(
                       context: context,
                       screenWidth: screenWidth,
                       screenHeight: screenHeight,
                       iconPath: 'assets/ic_facebook.svg',
-                      onTap: () {
-                        ShareService.shareToFacebook(psychotype, context: context);
+                      onTap: () async {
+                        final image = await _captureCard();
+                        if (!context.mounted) return;
+                        ShareService.shareToFacebook(psychotype, context: context, image: image);
                       },
                     ),
                     SizedBox(width: screenWidth * 0.045), // 17px gap
@@ -132,14 +182,16 @@ class ShareResultScreen extends StatelessWidget {
                       },
                     ),
                     SizedBox(width: screenWidth * 0.045),
-                    // Instagram
+                    // Instagram — shares the result image (Instagram accepts images only)
                     _buildSocialButton(
                       context: context,
                       screenWidth: screenWidth,
                       screenHeight: screenHeight,
                       iconPath: 'assets/ic_instagram.svg',
-                      onTap: () {
-                        ShareService.shareToInstagram(psychotype, context: context);
+                      onTap: () async {
+                        final image = await _captureCard();
+                        if (!context.mounted) return;
+                        ShareService.shareToInstagram(psychotype, context: context, image: image);
                       },
                     ),
                     SizedBox(width: screenWidth * 0.045),
@@ -191,8 +243,8 @@ class ShareResultScreen extends StatelessWidget {
           child: Container(
             width: screenWidth * 0.133, // 50px on 375px
             height: screenWidth * 0.133,
-            decoration: BoxDecoration(
-              color: const Color(0xFFBC91DB),
+            decoration: const BoxDecoration(
+              color: Color(0xFFBC91DB),
               shape: BoxShape.circle,
             ),
             child: Center(
@@ -208,4 +260,3 @@ class ShareResultScreen extends StatelessWidget {
     );
   }
 }
-
