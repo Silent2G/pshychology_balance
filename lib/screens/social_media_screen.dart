@@ -70,7 +70,7 @@ class SocialMediaScreen extends StatelessWidget {
                         children: [
                           // Facebook
                           GestureDetector(
-                            onTap: () => _openSocialMedia('https://www.facebook.com/share/1GThCDmqKD/?mibextid=wwXIfr'),
+                            onTap: () => _openSocialMedia('https://www.facebook.com/profile.php?id=61585117951980'),
                             child: Container(
                               width: screenWidth * 0.133, // 50px on 375px
                               height: screenWidth * 0.133,
@@ -91,7 +91,7 @@ class SocialMediaScreen extends StatelessWidget {
 
                           // Instagram
                           GestureDetector(
-                            onTap: () => _openSocialMedia('https://www.instagram.com/ai_psychology_balance?igsh=aWg0OGJ6MGZlOXdp&utm_source=qr'),
+                            onTap: () => _openSocialMedia('https://www.instagram.com/ai_psychology_balance?utm_source=qr'),
                             child: Container(
                               width: screenWidth * 0.133, // 50px on 375px
                               height: screenWidth * 0.133,
@@ -112,7 +112,7 @@ class SocialMediaScreen extends StatelessWidget {
 
                           // TikTok
                           GestureDetector(
-                            onTap: () => _openSocialMedia('https://www.tiktok.com/@aipbalance?_r=1&_t=ZM-92x5MGQqQ6l'),
+                            onTap: () => _openSocialMedia('https://www.tiktok.com/@ai_psychology_bal?_r=1'),
                             child: Container(
                               width: screenWidth * 0.133, // 50px on 375px
                               height: screenWidth * 0.133,
