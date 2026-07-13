@@ -388,19 +388,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Container(
               width: screenWidth * 0.11, // ~30px on 375px
               height: screenWidth * 0.11,
-              decoration: BoxDecoration(
-                color: color,
-                shape: BoxShape.circle,
-                image: DecorationImage(image: AssetImage('assets/bg_circle.png'), fit: BoxFit.fill),
-              ),
+              decoration: context.palette.isDark
+                  ? BoxDecoration(color: color, shape: BoxShape.circle)
+                  : BoxDecoration(
+                      color: color,
+                      shape: BoxShape.circle,
+                      image: const DecorationImage(image: AssetImage('assets/bg_circle.png'), fit: BoxFit.fill),
+                    ),
               child: Center(
                 child: Text(
                   value,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w600,
                     fontSize: 20,
-                    color: Color(0xFFBC91DB),
+                    color: context.palette.isDark ? Colors.white : const Color(0xFFBC91DB),
                   ),
                 ),
               ),
