@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../constants/app_palette.dart';
 
 class CommonHeader extends StatelessWidget {
   final VoidCallback? onBack;
@@ -28,13 +29,19 @@ class CommonHeader extends StatelessWidget {
               child: Container(
                 width: screenWidth * 0.133, // 50px on 375px
                 height: screenWidth * 0.133,
-                decoration: BoxDecoration(
-                  image: const DecorationImage(
-                    image: AssetImage('assets/bg_circle_button.png'),
-                    fit: BoxFit.fill,
-                  ),
-                  shape: BoxShape.circle,
-                ),
+                decoration: context.palette.isDark
+                    ? BoxDecoration(
+                        color: context.palette.surface,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: context.palette.surfaceBorder, width: 1.5),
+                      )
+                    : const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/bg_circle_button.png'),
+                          fit: BoxFit.fill,
+                        ),
+                        shape: BoxShape.circle,
+                      ),
                 child: Center(
                   child: SvgPicture.asset(
                     'assets/ic_arrow_back.svg',
