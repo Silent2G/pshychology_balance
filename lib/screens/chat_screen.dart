@@ -1364,7 +1364,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                     fontWeight: FontWeight.w400,
                     fontSize: 12,
                     height: 1.25,
-                    color: Color(0xFF282828),
+                    color: context.palette.textSecondary,
                   ),
                 ),
                 const SizedBox(width: 4),
@@ -1399,7 +1399,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                 child: Container(
                   width: 4,
                   height: 4,
-                  decoration: const BoxDecoration(color: Color(0xFF282828), shape: BoxShape.circle),
+                  decoration: BoxDecoration(color: context.palette.textSecondary, shape: BoxShape.circle),
                 ),
               ),
             );
