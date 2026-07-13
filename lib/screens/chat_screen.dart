@@ -17,6 +17,7 @@ import '../providers/auth_provider.dart';
 import '../models/chat_session.dart' as models;
 import '../widgets/common_header.dart';
 import '../widgets/ai_consent_dialog.dart';
+import '../widgets/confirm_dialog.dart';
 import '../l10n/app_localizations.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -433,6 +434,31 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     } catch (e) {
       print('❌ Ошибка генерации названия сеансу: $e');
     }
+  }
+
+  /// Asks the user to confirm before clearing the conversation and starting over.
+  Future<void> _confirmResetChat() async {
+    final l = AppLocalizations.of(context)!;
+    final confirmed = await showConfirmDialog(
+      context,
+      title: l.startOverConfirmTitle,
+      message: l.startOverConfirmMessage,
+      confirmLabel: l.startOver,
+    );
+    if (confirmed) _resetChat();
+  }
+
+  /// Asks the user to confirm before ending the current session.
+  Future<void> _confirmEndSession() async {
+    final l = AppLocalizations.of(context)!;
+    final confirmed = await showConfirmDialog(
+      context,
+      title: l.endSessionConfirmTitle,
+      message: l.endSessionConfirmMessage,
+      confirmLabel: l.endSession,
+      isDestructive: true,
+    );
+    if (confirmed) _endSession();
   }
 
   void _resetChat() {
@@ -931,9 +957,6 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    // Check if keyboard is open
-    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
-    final isKeyboardOpen = keyboardHeight > 0;
     final screenSize = MediaQuery.of(context).size;
     final screenWidth = screenSize.width;
     final screenHeight = screenSize.height;
@@ -950,8 +973,25 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
           child: SafeArea(
             child: Column(
               children: [
-                // Common header with back button and logo
-                CommonHeader(onBack: widget.onBack, showBackButton: true),
+                // Common header with back button, logo and session controls
+                CommonHeader(
+                  onBack: widget.onBack,
+                  showBackButton: true,
+                  actions: _isSessionCompleted
+                      ? const []
+                      : [
+                          CircleHeaderButton(
+                            icon: Icons.refresh_rounded,
+                            tooltip: localizations.startOver,
+                            onTap: _confirmResetChat,
+                          ),
+                          CircleHeaderButton(
+                            icon: Icons.check_rounded,
+                            tooltip: localizations.endSession,
+                            onTap: _confirmEndSession,
+                          ),
+                        ],
+                ),
                 SizedBox(height: screenHeight * 0.018), // ~15px on 812px
                 // Message list
                 Expanded(
@@ -1086,22 +1126,6 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                           ),
                         ),
                       ),
-
-                      // Action buttons (hidden when keyboard open or session completed)
-                      if (!isKeyboardOpen && !_isSessionCompleted) ...[
-                        SizedBox(height: screenHeight * 0.015), // 12px
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.043), // 16px
-                          child: Column(
-                            children: [
-                              _buildActionButton(localizations.endSession, screenWidth, screenHeight),
-                              SizedBox(height: screenHeight * 0.012), // 10px
-                              _buildActionButton(localizations.startOver, screenWidth, screenHeight),
-                              // SizedBox(height: screenHeight * 0.01), // 12px
-                            ],
-                          ),
-                        ),
-                      ],
                     ],
                   ),
                 ),
@@ -1406,42 +1430,6 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
           }),
         );
       },
-    );
-  }
-
-  Widget _buildActionButton(String text, double screenWidth, double screenHeight) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () {
-          final localizations = AppLocalizations.of(context);
-          if (localizations != null) {
-            if (text == localizations.endSession) {
-              _endSession();
-            } else if (text == localizations.startOver) {
-              _resetChat();
-            }
-          }
-        },
-        borderRadius: BorderRadius.circular(99),
-        child: Container(
-          width: double.infinity,
-          height: screenHeight * 0.062, // 50px on 812px
-          decoration: BoxDecoration(color: const Color(0xFFBC91DB), borderRadius: BorderRadius.circular(99)),
-          child: Center(
-            child: Text(
-              text,
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.w700,
-                fontSize: 16,
-                height: 1.25,
-                color: Color(0xFFFFFFFF),
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 
