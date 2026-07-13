@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/common_header.dart';
@@ -57,25 +58,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _pickImage() async {
     try {
       final XFile? image = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 85);
+      if (image == null) return;
 
-      if (image != null) {
-        // Save image to app persistent storage
-        final Directory appDir = await getApplicationDocumentsDirectory();
-        final String fileName = 'profile_${DateTime.now().millisecondsSinceEpoch}.jpg';
-        final String savedPath = '${appDir.path}/$fileName';
-        final File savedImage = await File(image.path).copy(savedPath);
+      // Let the user crop the picked photo to a circular avatar (square 1:1).
+      final CroppedFile? cropped = await _cropAvatar(image.path);
+      if (cropped == null) return; // user cancelled the crop
 
-        await _saveProfileImage(savedPath);
-        setState(() {
-          _profileImage = savedImage;
-        });
-      }
+      // Save the cropped image to app persistent storage.
+      final Directory appDir = await getApplicationDocumentsDirectory();
+      final String fileName = 'profile_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final String savedPath = '${appDir.path}/$fileName';
+      final File savedImage = await File(cropped.path).copy(savedPath);
+
+      await _saveProfileImage(savedPath);
+      if (!mounted) return;
+      setState(() {
+        _profileImage = savedImage;
+      });
     } catch (e) {
       if (mounted) {
         final localizations = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${localizations.errorSelectingPhoto}: $e')));
       }
     }
+  }
+
+  /// Opens the native crop UI locked to a circular 1:1 avatar and returns the
+  /// cropped file (or null if the user cancels).
+  Future<CroppedFile?> _cropAvatar(String sourcePath) {
+    final palette = context.palette;
+    return ImageCropper().cropImage(
+      sourcePath: sourcePath,
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+      maxWidth: 1080,
+      maxHeight: 1080,
+      compressFormat: ImageCompressFormat.jpg,
+      compressQuality: 90,
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Crop Photo',
+          cropStyle: CropStyle.circle,
+          lockAspectRatio: true,
+          hideBottomControls: true,
+          toolbarColor: palette.scaffold,
+          toolbarWidgetColor: palette.textPrimary,
+          backgroundColor: palette.scaffold,
+          activeControlsWidgetColor: palette.accent,
+          initAspectRatio: CropAspectRatioPreset.square,
+        ),
+        IOSUiSettings(
+          title: 'Crop Photo',
+          cropStyle: CropStyle.circle,
+          aspectRatioLockEnabled: true,
+          resetAspectRatioEnabled: false,
+          aspectRatioPickerButtonHidden: true,
+        ),
+      ],
+    );
   }
 
   @override
