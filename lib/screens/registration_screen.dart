@@ -136,14 +136,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 padding: EdgeInsets.symmetric(
                                   horizontal: screenWidth * 0.053, // ~20px
                                 ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  image: const DecorationImage(
-                                    image: AssetImage('assets/bg_text_field.png'),
-                                    fit: BoxFit.fill,
-                                  ),
-                                  borderRadius: BorderRadius.circular(99),
-                                ),
+                                decoration: context.palette.isDark
+                                    ? BoxDecoration(
+                                        color: context.palette.surface,
+                                        borderRadius: BorderRadius.circular(99),
+                                        border: Border.all(color: context.palette.surfaceBorder, width: 1.5),
+                                      )
+                                    : BoxDecoration(
+                                        color: Colors.white,
+                                        image: const DecorationImage(
+                                          image: AssetImage('assets/bg_text_field.png'),
+                                          fit: BoxFit.fill,
+                                        ),
+                                        borderRadius: BorderRadius.circular(99),
+                                      ),
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: TextFormField(
@@ -196,14 +202,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 padding: EdgeInsets.symmetric(
                                   horizontal: screenWidth * 0.059, // ~22px
                                 ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  image: const DecorationImage(
-                                    image: AssetImage('assets/bg_text_field.png'),
-                                    fit: BoxFit.fill,
-                                  ),
-                                  borderRadius: BorderRadius.circular(99),
-                                ),
+                                decoration: context.palette.isDark
+                                    ? BoxDecoration(
+                                        color: context.palette.surface,
+                                        borderRadius: BorderRadius.circular(99),
+                                        border: Border.all(color: context.palette.surfaceBorder, width: 1.5),
+                                      )
+                                    : BoxDecoration(
+                                        color: Colors.white,
+                                        image: const DecorationImage(
+                                          image: AssetImage('assets/bg_text_field.png'),
+                                          fit: BoxFit.fill,
+                                        ),
+                                        borderRadius: BorderRadius.circular(99),
+                                      ),
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: TextFormField(

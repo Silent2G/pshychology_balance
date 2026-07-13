@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../constants/app_palette.dart';
 import '../providers/locale_provider.dart';
 import '../l10n/app_localizations.dart';
 
@@ -15,6 +16,7 @@ class _LanguageDialogState extends State<LanguageDialog> {
   Widget build(BuildContext context) {
     final localeProvider = Provider.of<LocaleProvider>(context);
     final localizations = AppLocalizations.of(context)!;
+    final palette = context.palette;
     final screenSize = MediaQuery.of(context).size;
     final screenWidth = screenSize.width;
     final screenHeight = screenSize.height;
@@ -34,7 +36,7 @@ class _LanguageDialogState extends State<LanguageDialog> {
         width: screenWidth * 0.917, // ~344px on 375px
         height: screenHeight * 0.53, // ~430px on 812px
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: palette.surface,
           borderRadius: BorderRadius.circular(32),
           border: Border.all(color: const Color(0xFF9557C2), width: 1),
         ),
@@ -100,7 +102,7 @@ class _LanguageDialogState extends State<LanguageDialog> {
                           height: screenHeight * 0.071, // ~57px on 812px
                           padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.043), // ~16px on 375px
                           decoration: BoxDecoration(
-                            color: isSelected ? const Color(0xFFBC91DB) : Colors.white,
+                            color: isSelected ? const Color(0xFFBC91DB) : palette.surface,
                             borderRadius: BorderRadius.circular(24),
                             border: Border.all(
                               color: const Color(0xFF9557C2),

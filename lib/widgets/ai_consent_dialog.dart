@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../constants/app_palette.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../l10n/app_localizations.dart';
 import '../services/ai_consent_service.dart';
@@ -41,15 +42,15 @@ class _AiConsentDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     return AlertDialog(
-      backgroundColor: const Color(0xFFFDFDFD),
+      backgroundColor: context.palette.surface,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       title: Text(
         l.aiConsentTitle,
-        style: const TextStyle(
+        style: TextStyle(
           fontFamily: 'Montserrat',
           fontWeight: FontWeight.w700,
           fontSize: 18,
-          color: Color(0xFF000000),
+          color: context.palette.textPrimary,
         ),
       ),
       content: SingleChildScrollView(
@@ -59,12 +60,12 @@ class _AiConsentDialog extends StatelessWidget {
           children: [
             Text(
               l.aiConsentMessage,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.w400,
                 fontSize: 14,
                 height: 1.4,
-                color: Color(0xFF333333),
+                color: context.palette.textSecondary,
               ),
             ),
             const SizedBox(height: 12),
@@ -72,7 +73,7 @@ class _AiConsentDialog extends StatelessWidget {
               onTap: _openPrivacyPolicy,
               child: Text(
                 l.privacyPolicy,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
@@ -90,11 +91,11 @@ class _AiConsentDialog extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(false),
           child: Text(
             l.aiConsentDecline,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Montserrat',
               fontWeight: FontWeight.w500,
               fontSize: 14,
-              color: Color(0xFF888888),
+              color: context.palette.textSecondary,
             ),
           ),
         ),
@@ -102,7 +103,7 @@ class _AiConsentDialog extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(true),
           child: Text(
             l.aiConsentAgree,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Montserrat',
               fontWeight: FontWeight.w700,
               fontSize: 14,

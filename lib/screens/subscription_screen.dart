@@ -249,7 +249,7 @@ class SubscriptionScreen extends StatelessWidget {
               width: double.infinity,
               height: 50,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: context.palette.surface,
                 borderRadius: BorderRadius.circular(99),
                 border: Border.all(color: accent, width: 1.5),
               ),
