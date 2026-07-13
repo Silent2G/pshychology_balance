@@ -92,7 +92,7 @@ class _ShareResultScreenState extends State<ShareResultScreen> {
                 RepaintBoundary(
                   key: _cardKey,
                   child: Container(
-                    color: const Color(0xFFFDFDFD),
+                    color: context.palette.surface,
                     padding: EdgeInsets.symmetric(
                       horizontal: screenWidth * 0.04,
                       vertical: screenHeight * 0.02,
