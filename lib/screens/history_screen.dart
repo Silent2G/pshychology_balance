@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../constants/app_palette.dart';
+import '../widgets/app_background.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../widgets/common_header.dart';
@@ -34,13 +36,9 @@ class HistoryScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFDFDFD),
-      body: Container(
-        width: screenWidth,
-        height: screenHeight,
-        decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/background_main.png'), fit: BoxFit.cover),
-        ),
+      backgroundColor: context.palette.scaffold,
+      body: AppBackground(
+        lightImage: 'assets/background_main.png',
         child: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04), // 15px on 375px
@@ -73,7 +71,7 @@ class HistoryScreen extends StatelessWidget {
                         Center(
                           child: Text(
                             localizations.historyEmpty,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.w400,
                               fontSize: 16,
@@ -197,10 +195,16 @@ class HistoryScreen extends StatelessWidget {
         margin: EdgeInsets.only(bottom: screenHeight * 0.03), // 24px on 812px
         width: screenWidth * 0.917, // 344px on 375px
         height: screenHeight * 0.111, // 90px on 812px
-        decoration: BoxDecoration(
-          image: const DecorationImage(image: AssetImage('assets/bg_card_history.png'), fit: BoxFit.fill),
-          borderRadius: BorderRadius.circular(99),
-        ),
+        decoration: context.palette.isDark
+            ? BoxDecoration(
+                color: context.palette.surface,
+                borderRadius: BorderRadius.circular(99),
+                border: Border.all(color: context.palette.surfaceBorder, width: 1.5),
+              )
+            : BoxDecoration(
+                image: const DecorationImage(image: AssetImage('assets/bg_card_history.png'), fit: BoxFit.fill),
+                borderRadius: BorderRadius.circular(99),
+              ),
         child: Stack(
           children: [
             // Main content
@@ -231,7 +235,7 @@ class HistoryScreen extends StatelessWidget {
                         // Chat title
                         Text(
                           _localizeChatTitle(session.title, localizations),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.w600,
                             fontSize: 14,
@@ -245,7 +249,7 @@ class HistoryScreen extends StatelessWidget {
                           children: [
                             Text(
                               _formatTime(session.updatedAt),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14,
@@ -262,7 +266,7 @@ class HistoryScreen extends StatelessWidget {
                             SizedBox(width: screenWidth * 0.021), // 8px
                             Text(
                               _formatDate(session.updatedAt),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14,
@@ -289,7 +293,7 @@ class HistoryScreen extends StatelessWidget {
                 child: Center(
                   child: Text(
                     localizations.saved,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w400,
                       fontSize: 10,

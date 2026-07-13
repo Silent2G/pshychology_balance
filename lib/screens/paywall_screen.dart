@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../constants/app_palette.dart';
+import '../widgets/app_background.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -230,7 +232,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
     final textPainter = TextPainter(
       text: TextSpan(
         text: text,
-        style: const TextStyle(fontFamily: 'Montserrat', fontWeight: FontWeight.w400, fontSize: 16, height: 1.25),
+        style: TextStyle(fontFamily: 'Montserrat', fontWeight: FontWeight.w400, fontSize: 16, height: 1.25),
       ),
       maxLines: 2,
       textDirection: ui.TextDirection.ltr,
@@ -248,13 +250,9 @@ class _PaywallScreenState extends State<PaywallScreen> {
     final screenHeight = screenSize.height;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFDFDFD),
-      body: Container(
-        width: screenWidth,
-        height: screenHeight,
-        decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/background_main.png'), fit: BoxFit.cover),
-        ),
+      backgroundColor: context.palette.scaffold,
+      body: AppBackground(
+        lightImage: 'assets/background_main.png',
         child: SafeArea(
           child: Stack(
             children: [
@@ -310,12 +308,12 @@ class _PaywallScreenState extends State<PaywallScreen> {
                                     alignment: Alignment.bottomLeft,
                                     child: Text(
                                       limitText,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontWeight: FontWeight.w400,
                                         fontSize: 16,
                                         height: 1.25, // 20px / 16px
-                                        color: Color(0xFF000000),
+                                        color: context.palette.textPrimary,
                                       ),
                                       maxLines: 2,
                                     ),
@@ -417,7 +415,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                             )
                           : Text(
                               localizations.paywallBuyButton,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w700,
                                 fontSize: 16,
@@ -440,7 +438,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                     child: Center(
                       child: Text(
                         localizations.restorePurchases,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontWeight: FontWeight.w500,
                           fontSize: 13,
@@ -464,7 +462,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                 child: RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w400,
                       fontSize: 11,
@@ -475,7 +473,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                       TextSpan(text: '${localizations.agreeToPrivacyPolicy} '),
                       TextSpan(
                         text: localizations.privacyPolicy,
-                        style: const TextStyle(
+                        style: TextStyle(
                           decoration: TextDecoration.underline,
                           color: Color(0xFF888888),
                         ),
@@ -484,7 +482,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                       const TextSpan(text: '  •  '),
                       TextSpan(
                         text: localizations.termsOfUse,
-                        style: const TextStyle(
+                        style: TextStyle(
                           decoration: TextDecoration.underline,
                           color: Color(0xFF888888),
                         ),

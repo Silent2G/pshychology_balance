@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../constants/app_palette.dart';
+import '../widgets/app_background.dart';
 import '../widgets/common_header.dart';
 import '../widgets/mood_face.dart';
 import '../l10n/app_localizations.dart';
@@ -67,13 +69,9 @@ class _TestQuestionScreenState extends State<TestQuestionScreen> {
     final screenHeight = screenSize.height;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFDFDFD),
-      body: Container(
-        width: screenWidth,
-        height: screenHeight,
-        decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/background_main.png'), fit: BoxFit.cover),
-        ),
+      backgroundColor: context.palette.scaffold,
+      body: AppBackground(
+        lightImage: 'assets/background_main.png',
         child: SafeArea(
           child: Column(
             children: [

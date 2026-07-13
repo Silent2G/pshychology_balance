@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../constants/app_palette.dart';
+import '../widgets/app_background.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -94,12 +96,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         final screenHeight = screenSize.height;
 
         return Scaffold(
-          body: Container(
-            width: screenWidth,
-            height: screenHeight,
-            decoration: const BoxDecoration(
-              image: DecorationImage(image: AssetImage('assets/background.png'), fit: BoxFit.cover),
-            ),
+          backgroundColor: context.palette.scaffold,
+          body: AppBackground(
+            lightImage: 'assets/background.png',
             child: SafeArea(
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.043),
@@ -128,7 +127,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   fontWeight: FontWeight.w600,
                                   fontSize: screenWidth * 0.043, // ~16px
                                   height: 1.25, // 20/16
-                                  color: const Color(0xFF272727),
+                                  color: context.palette.textPrimary,
                                 ),
                               ),
                               SizedBox(height: screenHeight * 0.01), // ~8px
@@ -155,7 +154,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                       fontWeight: FontWeight.w400,
                                       fontSize: screenWidth * 0.043, // ~16px
                                       height: 1.0,
-                                      color: const Color(0xFF272727),
+                                      color: context.palette.textPrimary,
                                     ),
                                     decoration: InputDecoration(
                                       hintText: 'name@example.com',
@@ -188,7 +187,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   fontWeight: FontWeight.w600,
                                   fontSize: screenWidth * 0.043, // ~16px
                                   height: 1.25,
-                                  color: const Color(0xFF272727),
+                                  color: context.palette.textPrimary,
                                 ),
                               ),
                               SizedBox(height: screenHeight * 0.01), // ~8px
@@ -216,7 +215,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                       fontWeight: FontWeight.w400,
                                       fontSize: screenWidth * 0.043, // ~16px
                                       height: 1.0,
-                                      color: const Color(0xFF272727),
+                                      color: context.palette.textPrimary,
                                     ),
                                     decoration: InputDecoration(
                                       hintText: localizations.enterPassword,
@@ -331,7 +330,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     fontWeight: FontWeight.w400,
                                     fontSize: screenWidth * 0.037, // ~14px
                                     height: 1.214, // 17/14
-                                    color: const Color(0xFF000000),
+                                    color: context.palette.textPrimary,
                                   ),
                                 ),
                               ),
@@ -404,7 +403,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             fontWeight: FontWeight.w400,
                             fontSize: screenWidth * 0.043, // ~16px
                             height: 1.25,
-                            color: const Color(0xFF272727),
+                            color: context.palette.textPrimary,
                           ),
                           children: [
                             TextSpan(
@@ -412,7 +411,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                             TextSpan(
                               text: _isLogin ? localizations.register : localizations.login,
-                              style: const TextStyle(color: Color(0xFFBC91DB), fontWeight: FontWeight.w600),
+                              style: TextStyle(color: Color(0xFFBC91DB), fontWeight: FontWeight.w600),
                             ),
                           ],
                         ),
@@ -441,7 +440,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             TextSpan(text: '${localizations.agreeToPrivacyPolicy} '),
                             TextSpan(
                               text: localizations.privacyPolicy,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Color(0xFFBC91DB),
                                 fontWeight: FontWeight.w600,
                                 decoration: TextDecoration.underline,

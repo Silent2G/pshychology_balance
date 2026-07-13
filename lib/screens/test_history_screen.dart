@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../constants/app_palette.dart';
+import '../widgets/app_background.dart';
 import 'package:provider/provider.dart';
 import '../widgets/common_header.dart';
 import '../providers/auth_provider.dart';
@@ -42,13 +44,9 @@ class TestHistoryScreen extends StatelessWidget {
 
     if (userId == null) {
       return Scaffold(
-        backgroundColor: const Color(0xFFFDFDFD),
-        body: Container(
-          width: screenWidth,
-          height: screenHeight,
-          decoration: const BoxDecoration(
-            image: DecorationImage(image: AssetImage('assets/background_main.png'), fit: BoxFit.cover),
-          ),
+        backgroundColor: context.palette.scaffold,
+        body: AppBackground(
+          lightImage: 'assets/background_main.png',
           child: const SafeArea(
             child: Center(
               child: Text(
@@ -67,13 +65,9 @@ class TestHistoryScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFDFDFD),
-      body: Container(
-        width: screenWidth,
-        height: screenHeight,
-        decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/background_main.png'), fit: BoxFit.cover),
-        ),
+      backgroundColor: context.palette.scaffold,
+      body: AppBackground(
+        lightImage: 'assets/background_main.png',
         child: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04), // 15px on 375px
@@ -90,7 +84,7 @@ class TestHistoryScreen extends StatelessWidget {
                   return Center(
                     child: Text(
                       '${localizations.error}: ${snapshot.error}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
@@ -111,7 +105,7 @@ class TestHistoryScreen extends StatelessWidget {
                         Center(
                           child: Text(
                             localizations.historyEmpty,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.w400,
                               fontSize: 16,
@@ -230,10 +224,16 @@ class TestHistoryScreen extends StatelessWidget {
         margin: EdgeInsets.only(bottom: screenHeight * 0.03), // 24px on 812px
         width: screenWidth * 0.917, // 344px on 375px
         height: screenHeight * 0.111, // 90px on 812px
-        decoration: BoxDecoration(
-          image: const DecorationImage(image: AssetImage('assets/bg_card_history.png'), fit: BoxFit.fill),
-          borderRadius: BorderRadius.circular(99),
-        ),
+        decoration: context.palette.isDark
+            ? BoxDecoration(
+                color: context.palette.surface,
+                borderRadius: BorderRadius.circular(99),
+                border: Border.all(color: context.palette.surfaceBorder, width: 1.5),
+              )
+            : BoxDecoration(
+                image: const DecorationImage(image: AssetImage('assets/bg_card_history.png'), fit: BoxFit.fill),
+                borderRadius: BorderRadius.circular(99),
+              ),
         child: Stack(
           children: [
             // Main content
@@ -267,7 +267,7 @@ class TestHistoryScreen extends StatelessWidget {
                         // Psychotype name
                         Text(
                           testResult.psychotype,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.w600,
                             fontSize: 14,
@@ -282,7 +282,7 @@ class TestHistoryScreen extends StatelessWidget {
                           children: [
                             Text(
                               _formatTime(testResult.createdAt),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14,
@@ -299,7 +299,7 @@ class TestHistoryScreen extends StatelessWidget {
                             SizedBox(width: screenWidth * 0.021), // 8px
                             Text(
                               _formatDate(testResult.createdAt),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14,
@@ -326,7 +326,7 @@ class TestHistoryScreen extends StatelessWidget {
                 child: Center(
                   child: Text(
                     localizations.saved,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w400,
                       fontSize: 10,
