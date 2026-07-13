@@ -37,7 +37,11 @@
     {
       "id" : "21866645",
       "localizations" : [
-
+        {
+          "description" : "Premium subscription",
+          "displayName" : "Premium",
+          "locale" : "en_US"
+        }
       ],
       "name" : "Premium",
       "subscriptions" : [
@@ -59,6 +63,11 @@
             "subscriptionPeriod" : "P3D"
           },
           "localizations" : [
+            {
+              "description" : "Premium (6 month)",
+              "displayName" : "Premium (6 month)",
+              "locale" : "en_US"
+            },
             {
               "description" : "Premium (6 month)",
               "displayName" : "Premium (6 month)",
@@ -95,6 +104,11 @@
             {
               "description" : "Premium (Annual)",
               "displayName" : "Premium (Annual)",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "Premium (Annual)",
+              "displayName" : "Premium (Annual)",
               "locale" : "uk"
             }
           ],
@@ -125,6 +139,11 @@
             "subscriptionPeriod" : "P3D"
           },
           "localizations" : [
+            {
+              "description" : "Premium (Monthly)",
+              "displayName" : "Premium (Monthly)",
+              "locale" : "en_US"
+            },
             {
               "description" : "Premium (Monthly)",
               "displayName" : "Premium (Monthly)",
