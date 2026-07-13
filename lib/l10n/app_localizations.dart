@@ -2203,6 +2203,74 @@ class AppLocalizations {
     }
   }
 
+  String get endSessionConfirmTitle {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Завершити сесію?';
+      case 'en':
+        return 'End session?';
+      case 'es':
+        return '¿Finalizar sesión?';
+      case 'hi':
+        return 'सत्र समाप्त करें?';
+      case 'zh':
+        return '结束会话？';
+      default:
+        return 'Завершити сесію?';
+    }
+  }
+
+  String get endSessionConfirmMessage {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Поточну розмову буде завершено. Ви впевнені?';
+      case 'en':
+        return 'This will end your current conversation. Are you sure?';
+      case 'es':
+        return 'Esto finalizará tu conversación actual. ¿Estás seguro?';
+      case 'hi':
+        return 'इससे आपकी वर्तमान बातचीत समाप्त हो जाएगी। क्या आप निश्चित हैं?';
+      case 'zh':
+        return '这将结束您当前的对话。您确定吗？';
+      default:
+        return 'Поточну розмову буде завершено. Ви впевнені?';
+    }
+  }
+
+  String get startOverConfirmTitle {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Почати заново?';
+      case 'en':
+        return 'Start over?';
+      case 'es':
+        return '¿Empezar de nuevo?';
+      case 'hi':
+        return 'फिर से शुरू करें?';
+      case 'zh':
+        return '重新开始？';
+      default:
+        return 'Почати заново?';
+    }
+  }
+
+  String get startOverConfirmMessage {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Поточну розмову буде очищено, і почнеться нова. Ви впевнені?';
+      case 'en':
+        return 'Your current conversation will be cleared and a new one will begin. Are you sure?';
+      case 'es':
+        return 'Tu conversación actual se borrará y comenzará una nueva. ¿Estás seguro?';
+      case 'hi':
+        return 'आपकी वर्तमान बातचीत साफ़ हो जाएगी और एक नई शुरू होगी। क्या आप निश्चित हैं?';
+      case 'zh':
+        return '您当前的对话将被清除并开始新的对话。您确定吗？';
+      default:
+        return 'Поточну розмову буде очищено, і почнеться нова. Ви впевнені?';
+    }
+  }
+
   String get errorSelectingPhoto {
     switch (locale.languageCode) {
       case 'uk':
