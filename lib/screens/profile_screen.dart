@@ -141,7 +141,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   child: Container(
                                     width: screenWidth * 0.08, // ~30px on 375px
                                     height: screenWidth * 0.08,
-                                    child: Center(child: SvgPicture.asset('assets/ic_edit_photo.svg')),
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                        context.palette.isDark ? 'assets/ic_edit_photo_dark.svg' : 'assets/ic_edit_photo.svg',
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
