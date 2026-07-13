@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../constants/app_palette.dart';
+import '../widgets/app_background.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,13 +28,9 @@ class SubscriptionScreen extends StatelessWidget {
     final screenHeight = screenSize.height;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFDFDFD),
-      body: Container(
-        width: screenWidth,
-        height: screenHeight,
-        decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/background_main.png'), fit: BoxFit.cover),
-        ),
+      backgroundColor: context.palette.scaffold,
+      body: AppBackground(
+        lightImage: 'assets/background_main.png',
         child: SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -61,7 +59,7 @@ class SubscriptionScreen extends StatelessWidget {
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
                         height: 1.25, // 20px / 16px
-                        color: Color(0xFF000000),
+                        color: context.palette.textPrimary,
                       ),
                     ),
                     SizedBox(height: screenHeight * 0.039), // ~32px on 812px
@@ -100,7 +98,7 @@ class SubscriptionScreen extends StatelessWidget {
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
                         height: 1.25, // 20px / 16px
-                        color: Color(0xFF000000),
+                        color: context.palette.textPrimary,
                       ),
                     ),
                     SizedBox(height: screenHeight * 0.015), // ~12px on 812px
@@ -109,11 +107,11 @@ class SubscriptionScreen extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildBenefitItem(localizations.benefitWorkingPractices, screenWidth),
+                        _buildBenefitItem(context, localizations.benefitWorkingPractices, screenWidth),
                         SizedBox(height: screenHeight * 0.015), // ~12px on 812px
-                        _buildBenefitItem(localizations.benefitPocketPsychologist, screenWidth),
+                        _buildBenefitItem(context, localizations.benefitPocketPsychologist, screenWidth),
                         SizedBox(height: screenHeight * 0.015),
-                        _buildBenefitItem(localizations.benefitSupport, screenWidth),
+                        _buildBenefitItem(context, localizations.benefitSupport, screenWidth),
                       ],
                     ),
                     SizedBox(height: screenHeight * 0.049), // ~40px on 812px
@@ -176,9 +174,9 @@ class SubscriptionScreen extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.palette.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFEDE6F3), width: 1.5),
+        border: Border.all(color: context.palette.surfaceBorder, width: 1.5),
         boxShadow: [
           BoxShadow(color: accent.withOpacity(0.12), blurRadius: 18, offset: const Offset(0, 6)),
         ],
@@ -192,7 +190,7 @@ class SubscriptionScreen extends StatelessWidget {
               Expanded(
                 child: Text(
                   l.yourSubscription,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w700,
                     fontSize: 18,
@@ -213,7 +211,7 @@ class SubscriptionScreen extends StatelessWidget {
                     const SizedBox(width: 6),
                     Text(
                       l.statusActive,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontWeight: FontWeight.w600,
                         fontSize: 12,
@@ -229,11 +227,11 @@ class SubscriptionScreen extends StatelessWidget {
           // Plan name
           Text(
             _planName(l, status.subscriptionPlanId),
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Montserrat',
               fontWeight: FontWeight.w700,
               fontSize: 22,
-              color: Color(0xFF272727),
+              color: context.palette.textPrimary,
             ),
           ),
           const SizedBox(height: 18),
@@ -251,14 +249,14 @@ class SubscriptionScreen extends StatelessWidget {
               width: double.infinity,
               height: 50,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: context.palette.surface,
                 borderRadius: BorderRadius.circular(99),
                 border: Border.all(color: accent, width: 1.5),
               ),
               child: Center(
                 child: Text(
                   l.manageSubscription,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w700,
                     fontSize: 15,
@@ -307,7 +305,7 @@ class SubscriptionScreen extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.w500,
                 fontSize: 15,
@@ -320,7 +318,7 @@ class SubscriptionScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBenefitItem(String text, double screenWidth) {
+  Widget _buildBenefitItem(BuildContext context, String text, double screenWidth) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -334,12 +332,12 @@ class SubscriptionScreen extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Montserrat',
               fontWeight: FontWeight.w500,
               fontSize: 16,
               height: 1.25, // 20px / 16px
-              color: Color(0xFF000000),
+              color: context.palette.textPrimary,
             ),
           ),
         ),

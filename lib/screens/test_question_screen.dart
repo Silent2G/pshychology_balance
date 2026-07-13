@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../constants/app_palette.dart';
+import '../widgets/app_background.dart';
 import '../widgets/common_header.dart';
 import '../widgets/mood_face.dart';
 import '../l10n/app_localizations.dart';
@@ -67,13 +69,9 @@ class _TestQuestionScreenState extends State<TestQuestionScreen> {
     final screenHeight = screenSize.height;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFDFDFD),
-      body: Container(
-        width: screenWidth,
-        height: screenHeight,
-        decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/background_main.png'), fit: BoxFit.cover),
-        ),
+      backgroundColor: context.palette.scaffold,
+      body: AppBackground(
+        lightImage: 'assets/background_main.png',
         child: SafeArea(
           child: Column(
             children: [
@@ -101,7 +99,7 @@ class _TestQuestionScreenState extends State<TestQuestionScreen> {
                             ? 0
                             : widget.questionNumber / widget.totalQuestions,
                         minHeight: 6,
-                        backgroundColor: const Color(0xFFECE4F3),
+                        backgroundColor: context.palette.surfaceBorder,
                         valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFBC91DB)),
                       ),
                     ),
@@ -135,6 +133,7 @@ class _TestQuestionScreenState extends State<TestQuestionScreen> {
                         child: Column(
                           children: List.generate(4, (index) {
                             return _buildAnswerCard(
+                              context: context,
                               index: index,
                               label: answerLabels.length > index ? answerLabels[index] : '',
                               isSelected: selectedAnswer == index,
@@ -177,6 +176,7 @@ class _TestQuestionScreenState extends State<TestQuestionScreen> {
   }
 
   Widget _buildAnswerCard({
+    required BuildContext context,
     required int index,
     required String label,
     required bool isSelected,
@@ -196,10 +196,10 @@ class _TestQuestionScreenState extends State<TestQuestionScreen> {
                 end: Alignment.bottomRight,
               )
             : null,
-        color: isSelected ? null : Colors.white,
+        color: isSelected ? null : context.palette.surface,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: isSelected ? Colors.transparent : const Color(0xFFEDE6F3),
+          color: isSelected ? Colors.transparent : context.palette.surfaceBorder,
           width: 1.5,
         ),
         boxShadow: [
@@ -234,7 +234,7 @@ class _TestQuestionScreenState extends State<TestQuestionScreen> {
                       fontFamily: 'Montserrat',
                       fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
                       fontSize: 16,
-                      color: isSelected ? Colors.white : const Color(0xFF4A4458),
+                      color: isSelected ? Colors.white : context.palette.textPrimary,
                     ),
                   ),
                 ),
@@ -247,7 +247,7 @@ class _TestQuestionScreenState extends State<TestQuestionScreen> {
                     color: isSelected ? Colors.white : Colors.transparent,
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: isSelected ? Colors.white : const Color(0xFFD8CCE8),
+                      color: isSelected ? Colors.white : context.palette.surfaceBorder,
                       width: 2,
                     ),
                   ),

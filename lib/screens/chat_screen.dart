@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import '../constants/app_palette.dart';
+import '../widgets/app_background.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:record/record.dart';
@@ -942,13 +944,9 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Container(
-          width: screenWidth,
-          height: screenHeight,
-          decoration: const BoxDecoration(
-            image: DecorationImage(image: AssetImage('assets/background_chat.png'), fit: BoxFit.cover),
-          ),
+        backgroundColor: context.palette.scaffold,
+        body: AppBackground(
+          lightImage: 'assets/background_chat.png',
           child: SafeArea(
             child: Column(
               children: [
@@ -1011,7 +1009,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                                     horizontal: screenWidth * 0.027, // 10px
                                   ),
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: context.palette.surface,
                                     borderRadius: BorderRadius.circular(31),
                                   ),
                                   child: Row(
@@ -1019,12 +1017,12 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                                       Expanded(
                                         child: TextField(
                                           controller: _messageController,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontFamily: 'Montserrat',
                                             fontWeight: FontWeight.w400,
                                             fontSize: 12,
                                             height: 1.25,
-                                            color: Color(0xFF000000),
+                                            color: context.palette.textPrimary,
                                           ),
                                           decoration: InputDecoration(
                                             hintText: localizations.chatPlaceholder,
@@ -1073,7 +1071,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                                 child: Container(
                                   width: screenWidth * 0.096, // 36px on 375px
                                   height: screenWidth * 0.096,
-                                  decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                                  decoration: BoxDecoration(color: context.palette.surface, shape: BoxShape.circle),
                                   child: Center(
                                     child: SvgPicture.asset(
                                       'assets/ic_send.svg',
@@ -1164,7 +1162,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
               children: [
                 Icon(
                   isPlaying ? Icons.pause_circle_filled : Icons.play_circle_filled,
-                  color: isUser ? Colors.white : Colors.black87,
+                  color: isUser ? Colors.white : context.palette.textPrimary,
                   size: 28,
                 ),
                 const SizedBox(width: 12),
@@ -1175,7 +1173,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
-                      color: isUser ? Colors.white : Colors.black87,
+                      color: isUser ? Colors.white : context.palette.textPrimary,
                     ),
                   ),
                 ),
@@ -1204,7 +1202,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                           children: [
                             LinearProgressIndicator(
                               value: progress.clamp(0.0, 1.0),
-                              backgroundColor: isUser ? Colors.white.withOpacity(0.3) : Colors.black26,
+                              backgroundColor: isUser ? Colors.white.withOpacity(0.3) : context.palette.textMuted,
                               valueColor: AlwaysStoppedAnimation<Color>(
                                 isUser ? Colors.white : const Color(0xFFBC91DB),
                               ),
@@ -1219,7 +1217,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                                   style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 10,
-                                    color: isUser ? Colors.white70 : Colors.black54,
+                                    color: isUser ? Colors.white70 : context.palette.textSecondary,
                                   ),
                                 ),
                                 Text(
@@ -1227,7 +1225,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                                   style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 10,
-                                    color: isUser ? Colors.white70 : Colors.black54,
+                                    color: isUser ? Colors.white70 : context.palette.textSecondary,
                                   ),
                                 ),
                               ],
@@ -1269,7 +1267,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   decoration: BoxDecoration(
-                    color: message.isUser ? const Color(0xFFBC91DB) : const Color(0xFFF9FBFF),
+                    color: message.isUser ? const Color(0xFFBC91DB) : context.palette.surface,
                     borderRadius: message.isUser
                         ? const BorderRadius.only(
                             topLeft: Radius.circular(20),
@@ -1309,13 +1307,13 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                       if (message.text.isNotEmpty)
                         Text(
                           message.text,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.w400,
                             fontSize: 12,
                             height: 1.25,
                             color: Color(0xFFFFFFFF),
-                          ).copyWith(color: message.isUser ? const Color(0xFFFFFFFF) : const Color(0xFF282828)),
+                          ).copyWith(color: message.isUser ? const Color(0xFFFFFFFF) : context.palette.textPrimary),
                         ),
                     ],
                   ),
@@ -1329,7 +1327,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
             padding: EdgeInsets.only(left: message.isUser ? 0 : 0, right: message.isUser ? 0 : 0),
             child: Text(
               _formatTime(message.timestamp),
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.w400,
                 fontSize: 12,
@@ -1361,12 +1359,12 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
               children: [
                 Text(
                   'AI Psychologist is typing…',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
                     fontSize: 12,
                     height: 1.25,
-                    color: Color(0xFF282828),
+                    color: context.palette.textSecondary,
                   ),
                 ),
                 const SizedBox(width: 4),
@@ -1401,7 +1399,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                 child: Container(
                   width: 4,
                   height: 4,
-                  decoration: const BoxDecoration(color: Color(0xFF282828), shape: BoxShape.circle),
+                  decoration: BoxDecoration(color: context.palette.textSecondary, shape: BoxShape.circle),
                 ),
               ),
             );
@@ -1433,7 +1431,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
           child: Center(
             child: Text(
               text,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.w700,
                 fontSize: 16,

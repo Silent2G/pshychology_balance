@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../constants/app_palette.dart';
+import '../widgets/app_background.dart';
 import '../constants/app_text.dart';
 import '../widgets/app_header.dart';
 
@@ -42,12 +44,9 @@ class TestResultShareScreen extends StatelessWidget {
     final bodyFontSize = screenWidth * 0.043; // 16/375
 
     return Scaffold(
-      body: Container(
-        width: screenWidth,
-        height: screenHeight,
-        decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/background_main.png'), fit: BoxFit.cover),
-        ),
+      backgroundColor: context.palette.scaffold,
+      body: AppBackground(
+        lightImage: 'assets/background_main.png',
         child: SafeArea(
           child: SingleChildScrollView(
             child: Container(
@@ -214,7 +213,7 @@ class TestResultShareScreen extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400, height: 1.4),
+            style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400, height: 1.4),
           ),
         ),
       ],

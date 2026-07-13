@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../constants/app_palette.dart';
+import '../widgets/app_background.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/common_header.dart';
 import '../widgets/mood_face.dart';
@@ -17,13 +19,9 @@ class TestIntroScreen extends StatelessWidget {
     final screenHeight = screenSize.height;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFDFDFD),
-      body: Container(
-        width: screenWidth,
-        height: screenHeight,
-        decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/background.png'), fit: BoxFit.cover),
-        ),
+      backgroundColor: context.palette.scaffold,
+      body: AppBackground(
+        lightImage: 'assets/background.png',
         child: SafeArea(
           child: Column(
             children: [
@@ -44,7 +42,7 @@ class TestIntroScreen extends StatelessWidget {
                           children: [
                             TextSpan(
                               text: localizations.testIntroInvite,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w500,
                                 fontSize: 20,
@@ -54,7 +52,7 @@ class TestIntroScreen extends StatelessWidget {
                             ),
                             TextSpan(
                               text: localizations.psychotypeTest,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w700,
                                 fontSize: 20,
@@ -72,12 +70,12 @@ class TestIntroScreen extends StatelessWidget {
                         child: Text(
                           localizations.chooseEmoji,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
                             height: 1.25, // 20px / 16px
-                            color: Color(0xFF000000),
+                            color: context.palette.textPrimary,
                           ),
                         ),
                       ),
@@ -86,24 +84,28 @@ class TestIntroScreen extends StatelessWidget {
                       Column(
                         children: [
                           _buildEmojiOption(
+                            context: context,
                             level: 0,
                             text: localizations.notAboutMe,
                             screenWidth: screenWidth,
                           ),
                           SizedBox(height: screenHeight * 0.022), // 18px gap
                           _buildEmojiOption(
+                            context: context,
                             level: 1,
                             text: localizations.ratherNot,
                             screenWidth: screenWidth,
                           ),
                           SizedBox(height: screenHeight * 0.022), // 18px gap
                           _buildEmojiOption(
+                            context: context,
                             level: 2,
                             text: localizations.partially,
                             screenWidth: screenWidth,
                           ),
                           SizedBox(height: screenHeight * 0.022), // 18px gap
                           _buildEmojiOption(
+                            context: context,
                             level: 3,
                             text: localizations.fullyAboutMe,
                             screenWidth: screenWidth,
@@ -148,15 +150,21 @@ class TestIntroScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEmojiOption({required int level, required String text, required double screenWidth}) {
+  Widget _buildEmojiOption({required BuildContext context, required int level, required String text, required double screenWidth}) {
     return Container(
       width: double.infinity,
       height: screenWidth * 0.16, // 60px on 375px
       padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 6),
-      decoration: BoxDecoration(
-        image: const DecorationImage(image: AssetImage('assets/bg_emoji_card.png'), fit: BoxFit.fill),
-        borderRadius: BorderRadius.circular(99),
-      ),
+      decoration: context.palette.isDark
+          ? BoxDecoration(
+              color: context.palette.surface,
+              borderRadius: BorderRadius.circular(99),
+              border: Border.all(color: context.palette.surfaceBorder, width: 1.5),
+            )
+          : BoxDecoration(
+              image: const DecorationImage(image: AssetImage('assets/bg_emoji_card.png'), fit: BoxFit.fill),
+              borderRadius: BorderRadius.circular(99),
+            ),
       child: Row(
         children: [
           SizedBox(width: screenWidth * 0.028), // ~10px left padding
@@ -164,12 +172,12 @@ class TestIntroScreen extends StatelessWidget {
           SizedBox(width: screenWidth * 0.038), // 18px gap
           Text(
             text,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Montserrat',
               fontWeight: FontWeight.w500,
               fontSize: 16,
               height: 1.25, // 20px / 16px
-              color: Color(0xFF000000),
+              color: context.palette.textPrimary,
             ),
           ),
         ],

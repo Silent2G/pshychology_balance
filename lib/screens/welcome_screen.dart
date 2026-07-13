@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'registration_screen.dart';
+import '../constants/app_palette.dart';
+import '../widgets/app_background.dart';
 import '../l10n/app_localizations.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -26,12 +28,9 @@ class WelcomeScreen extends StatelessWidget {
     final screenHeight = screenSize.height;
 
     return Scaffold(
-      body: Container(
-        width: screenWidth,
-        height: screenHeight,
-        decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/background.png'), fit: BoxFit.cover),
-        ),
+      backgroundColor: context.palette.scaffold,
+      body: AppBackground(
+        lightImage: 'assets/background.png',
         child: SafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.only(
@@ -74,7 +73,7 @@ class WelcomeScreen extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                     fontSize: screenWidth * 0.053, // ~20px on 375px
                     height: 1.2, // 24/20
-                    color: const Color(0xFF272727),
+                    color: context.palette.textPrimary,
                   ),
                 ),
 
@@ -96,7 +95,7 @@ class WelcomeScreen extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                     fontSize: screenWidth * 0.053, // ~20px on 375px
                     height: 1.2, // 24/20
-                    color: const Color(0xFF272727),
+                    color: context.palette.textPrimary,
                   ),
                 ),
 

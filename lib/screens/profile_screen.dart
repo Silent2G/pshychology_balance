@@ -4,10 +4,14 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/common_header.dart';
 import '../widgets/language_dialog.dart';
+import '../widgets/theme_dialog.dart';
+import '../widgets/app_background.dart';
+import '../constants/app_palette.dart';
 import '../constants/legal_links.dart';
 import '../providers/auth_provider.dart';
 import '../services/firestore_service.dart';
@@ -54,25 +58,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _pickImage() async {
     try {
       final XFile? image = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 85);
+      if (image == null) return;
 
-      if (image != null) {
-        // Save image to app persistent storage
-        final Directory appDir = await getApplicationDocumentsDirectory();
-        final String fileName = 'profile_${DateTime.now().millisecondsSinceEpoch}.jpg';
-        final String savedPath = '${appDir.path}/$fileName';
-        final File savedImage = await File(image.path).copy(savedPath);
+      // Let the user crop the picked photo to a circular avatar (square 1:1).
+      final CroppedFile? cropped = await _cropAvatar(image.path);
+      if (cropped == null) return; // user cancelled the crop
 
-        await _saveProfileImage(savedPath);
-        setState(() {
-          _profileImage = savedImage;
-        });
-      }
+      // Save the cropped image to app persistent storage.
+      final Directory appDir = await getApplicationDocumentsDirectory();
+      final String fileName = 'profile_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final String savedPath = '${appDir.path}/$fileName';
+      final File savedImage = await File(cropped.path).copy(savedPath);
+
+      await _saveProfileImage(savedPath);
+      if (!mounted) return;
+      setState(() {
+        _profileImage = savedImage;
+      });
     } catch (e) {
       if (mounted) {
         final localizations = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${localizations.errorSelectingPhoto}: $e')));
       }
     }
+  }
+
+  /// Opens the native crop UI locked to a circular 1:1 avatar and returns the
+  /// cropped file (or null if the user cancels).
+  Future<CroppedFile?> _cropAvatar(String sourcePath) {
+    final palette = context.palette;
+    return ImageCropper().cropImage(
+      sourcePath: sourcePath,
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+      maxWidth: 1080,
+      maxHeight: 1080,
+      compressFormat: ImageCompressFormat.jpg,
+      compressQuality: 90,
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Crop Photo',
+          cropStyle: CropStyle.circle,
+          lockAspectRatio: true,
+          hideBottomControls: true,
+          toolbarColor: palette.scaffold,
+          toolbarWidgetColor: palette.textPrimary,
+          backgroundColor: palette.scaffold,
+          activeControlsWidgetColor: palette.accent,
+          initAspectRatio: CropAspectRatioPreset.square,
+        ),
+        IOSUiSettings(
+          title: 'Crop Photo',
+          cropStyle: CropStyle.circle,
+          aspectRatioLockEnabled: true,
+          resetAspectRatioEnabled: false,
+          aspectRatioPickerButtonHidden: true,
+        ),
+      ],
+    );
   }
 
   @override
@@ -88,13 +130,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         final screenHeight = screenSize.height;
 
         return Scaffold(
-          backgroundColor: const Color(0xFFFDFDFD),
-          body: Container(
-            width: screenWidth,
-            height: screenHeight,
-            decoration: const BoxDecoration(
-              image: DecorationImage(image: AssetImage('assets/background_main.png'), fit: BoxFit.cover),
-            ),
+          backgroundColor: context.palette.scaffold,
+          body: AppBackground(
             child: SafeArea(
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.043), // ~16px on 375px
@@ -107,9 +144,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Container(
                       width: double.infinity,
                       padding: EdgeInsets.all(screenWidth * 0.034), // ~24px on 375px
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(image: AssetImage('assets/bg_profile_header.png'), fit: BoxFit.fill),
-                      ),
+                      decoration: context.palette.isDark
+                          ? BoxDecoration(
+                              color: context.palette.surface,
+                              borderRadius: BorderRadius.circular(24),
+                              border: Border.all(color: context.palette.surfaceBorder, width: 1.5),
+                            )
+                          : const BoxDecoration(
+                              image: DecorationImage(image: AssetImage('assets/bg_profile_header.png'), fit: BoxFit.fill),
+                            ),
                       child: Column(
                         children: [
                           // Avatar with edit icon
@@ -137,7 +180,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   child: Container(
                                     width: screenWidth * 0.08, // ~30px on 375px
                                     height: screenWidth * 0.08,
-                                    child: Center(child: SvgPicture.asset('assets/ic_edit_photo.svg')),
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                        context.palette.isDark ? 'assets/ic_edit_photo_dark.svg' : 'assets/ic_edit_photo.svg',
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -261,6 +308,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: _buildMenuItem(context, localizations.language, 'assets/ic_language.svg', showArrow: true),
                     ),
                     SizedBox(height: screenHeight * 0.012),
+                    // Theme (light / dark / system)
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          barrierColor: Colors.black.withOpacity(0.3),
+                          builder: (context) => const ThemeDialog(),
+                        );
+                      },
+                      child: _buildMenuItem(context, localizations.theme, 'assets/ic_theme.svg', showArrow: true),
+                    ),
+                    SizedBox(height: screenHeight * 0.012),
                     // Privacy policy
                     GestureDetector(
                       onTap: () => _openPrivacyPolicy(context),
@@ -326,11 +385,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
       width: double.infinity,
       height: screenWidth * 0.14, // 60px on 375px, same as in test
       padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.043), // ~16px on 375px
-      decoration: BoxDecoration(
-        image: const DecorationImage(image: AssetImage('assets/bg_card.png'), fit: BoxFit.fill),
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(99), // Same as in test
-      ),
+      decoration: context.palette.isDark
+          ? BoxDecoration(
+              color: context.palette.surface,
+              borderRadius: BorderRadius.circular(99),
+              border: Border.all(color: context.palette.surfaceBorder, width: 1.5),
+            )
+          : BoxDecoration(
+              image: const DecorationImage(image: AssetImage('assets/bg_card.png'), fit: BoxFit.fill),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(99), // Same as in test
+            ),
       child: Row(
         children: [
           // Icon
@@ -366,19 +431,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Container(
               width: screenWidth * 0.11, // ~30px on 375px
               height: screenWidth * 0.11,
-              decoration: BoxDecoration(
-                color: color,
-                shape: BoxShape.circle,
-                image: DecorationImage(image: AssetImage('assets/bg_circle.png'), fit: BoxFit.fill),
-              ),
+              decoration: context.palette.isDark
+                  ? BoxDecoration(color: color, shape: BoxShape.circle)
+                  : BoxDecoration(
+                      color: color,
+                      shape: BoxShape.circle,
+                      image: const DecorationImage(image: AssetImage('assets/bg_circle.png'), fit: BoxFit.fill),
+                    ),
               child: Center(
                 child: Text(
                   value,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w600,
                     fontSize: 20,
-                    color: Color(0xFFBC91DB),
+                    color: context.palette.isDark ? Colors.white : const Color(0xFFBC91DB),
                   ),
                 ),
               ),

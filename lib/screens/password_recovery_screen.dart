@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../constants/app_palette.dart';
+import '../widgets/app_background.dart';
 import '../widgets/common_header.dart';
 import '../services/password_recovery_service.dart';
 import '../l10n/app_localizations.dart';
@@ -90,12 +92,9 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
     final screenHeight = screenSize.height;
 
     return Scaffold(
-      body: Container(
-        width: screenWidth,
-        height: screenHeight,
-        decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/background.png'), fit: BoxFit.cover),
-        ),
+      backgroundColor: context.palette.scaffold,
+      body: AppBackground(
+        lightImage: 'assets/background.png',
         child: SafeArea(
           child: Column(
             children: [
@@ -140,7 +139,7 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                                     fontWeight: FontWeight.w400,
                                     fontSize: screenWidth * 0.037, // ~14px
                                     height: 1.5, // 21/14
-                                    color: const Color(0xFF272727),
+                                    color: context.palette.textPrimary,
                                   ),
                                 ),
                               ],
@@ -158,7 +157,7 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                                     fontWeight: FontWeight.w600,
                                     fontSize: screenWidth * 0.043, // ~16px
                                     height: 1.25, // 20/16
-                                    color: const Color(0xFF272727),
+                                    color: context.palette.textPrimary,
                                   ),
                                 ),
                                 SizedBox(height: screenHeight * 0.01), // ~8px
@@ -167,14 +166,20 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                                   padding: EdgeInsets.symmetric(
                                     horizontal: screenWidth * 0.053, // ~20px
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    image: const DecorationImage(
-                                      image: AssetImage('assets/bg_text_field.png'),
-                                      fit: BoxFit.fill,
-                                    ),
-                                    borderRadius: BorderRadius.circular(99),
-                                  ),
+                                  decoration: context.palette.isDark
+                                      ? BoxDecoration(
+                                          color: context.palette.surface,
+                                          borderRadius: BorderRadius.circular(99),
+                                          border: Border.all(color: context.palette.surfaceBorder, width: 1.5),
+                                        )
+                                      : BoxDecoration(
+                                          color: Colors.white,
+                                          image: const DecorationImage(
+                                            image: AssetImage('assets/bg_text_field.png'),
+                                            fit: BoxFit.fill,
+                                          ),
+                                          borderRadius: BorderRadius.circular(99),
+                                        ),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: TextFormField(
@@ -186,7 +191,7 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                                         fontWeight: FontWeight.w400,
                                         fontSize: screenWidth * 0.043, // ~16px
                                         height: 1.0,
-                                        color: const Color(0xFF272727),
+                                        color: context.palette.textPrimary,
                                       ),
                                       decoration: InputDecoration(
                                         hintText: 'name@example.com',
@@ -230,13 +235,13 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                                     fontWeight: FontWeight.w400,
                                     fontSize: screenWidth * 0.043, // ~16px
                                     height: 1.25,
-                                    color: const Color(0xFF272727),
+                                    color: context.palette.textPrimary,
                                   ),
                                   children: [
                                     TextSpan(text: '${localizations.rememberPassword} '),
                                     TextSpan(
                                       text: localizations.login,
-                                      style: const TextStyle(color: Color(0xFFBC91DB), fontWeight: FontWeight.w600),
+                                      style: TextStyle(color: Color(0xFFBC91DB), fontWeight: FontWeight.w600),
                                     ),
                                   ],
                                 ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../constants/app_palette.dart';
+import '../widgets/app_background.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:math' as math;
 import '../widgets/common_header.dart';
@@ -49,13 +51,9 @@ class TestResultScreen extends StatelessWidget {
     final screenHeight = screenSize.height;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFDFDFD),
-      body: Container(
-        width: screenWidth,
-        height: screenHeight,
-        decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/background_main.png'), fit: BoxFit.cover),
-        ),
+      backgroundColor: context.palette.scaffold,
+      body: AppBackground(
+        lightImage: 'assets/background_main.png',
         child: SafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
@@ -122,7 +120,7 @@ class TestResultScreen extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                     fontSize: screenWidth * 0.043, // 16px on 375px
                     height: 1.25, // 20px / 16px
-                    color: const Color(0xFF000000),
+                    color: context.palette.textPrimary,
                   ),
                 ),
                 SizedBox(height: screenHeight * 0.04), // ~32px
@@ -165,7 +163,7 @@ class TestResultScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w500,
                                 fontSize: screenWidth * 0.043, // 16px on 375px
                                 height: 1.25, // 20px / 16px
-                                color: const Color(0xFF000000),
+                                color: context.palette.textPrimary,
                               ),
                             ),
                           ),

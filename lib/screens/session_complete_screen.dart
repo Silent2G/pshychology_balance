@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../constants/app_palette.dart';
+import '../widgets/app_background.dart';
 import '../widgets/common_header.dart';
 import '../l10n/app_localizations.dart';
 
@@ -16,13 +18,9 @@ class SessionCompleteScreen extends StatelessWidget {
     final screenHeight = screenSize.height;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFDFDFD),
-      body: Container(
-        width: screenWidth,
-        height: screenHeight,
-        decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/background.png'), fit: BoxFit.cover),
-        ),
+      backgroundColor: context.palette.scaffold,
+      body: AppBackground(
+        lightImage: 'assets/background.png',
         child: SafeArea(
           child: Column(
             children: [
@@ -45,7 +43,7 @@ class SessionCompleteScreen extends StatelessWidget {
                               child: Text(
                                 localizations.sessionCompleted,
                                 textAlign: TextAlign.center,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w700,
                                   fontSize: 20,
@@ -75,7 +73,7 @@ class SessionCompleteScreen extends StatelessWidget {
                                 child: Center(
                                   child: Text(
                                     localizations.toMainPage,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontFamily: 'Montserrat',
                                       fontWeight: FontWeight.w700,
                                       fontSize: 16,
