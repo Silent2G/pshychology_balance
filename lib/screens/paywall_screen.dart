@@ -364,7 +364,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                             Positioned.fill(
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.7),
+                                  color: context.palette.surface.withOpacity(0.7),
                                   borderRadius: BorderRadius.circular(32),
                                 ),
                                 child: const Center(
@@ -520,7 +520,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
     required double screenWidth,
     required double screenHeight,
   }) {
-    final backgroundColor = isSelected ? const Color(0xFFBC91DB) : Colors.white;
+    final backgroundColor = isSelected ? const Color(0xFFBC91DB) : context.palette.surface;
     final textColor = isSelected ? Colors.white : const Color(0xFFBC91DB);
     // final borderColor = isSelected ? const Color(0xFF9557C2) : const Color(0xFFBC91DB);
 
@@ -535,9 +535,13 @@ class _PaywallScreenState extends State<PaywallScreen> {
         height: screenHeight * 0.17, // ~138px on 812px
         decoration: BoxDecoration(
           color: backgroundColor,
-          image: isSelected ? null : const DecorationImage(image: AssetImage('assets/bg_tarif.png'), fit: BoxFit.fill),
+          image: (isSelected || context.palette.isDark)
+              ? null
+              : const DecorationImage(image: AssetImage('assets/bg_tarif.png'), fit: BoxFit.fill),
           borderRadius: BorderRadius.circular(32),
-          // border: Border.all(color: isSelected ? const Color(0xFF9557C2) : borderColor, width: isSelected ? 2 : 1),
+          border: (!isSelected && context.palette.isDark)
+              ? Border.all(color: context.palette.surfaceBorder, width: 1.5)
+              : null,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
