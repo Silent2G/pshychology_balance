@@ -1914,6 +1914,91 @@ class AppLocalizations {
     }
   }
 
+  String get theme {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Тема';
+      case 'en':
+        return 'Theme';
+      case 'es':
+        return 'Tema';
+      case 'hi':
+        return 'थीम';
+      case 'zh':
+        return '主题';
+      default:
+        return 'Тема';
+    }
+  }
+
+  String get chooseTheme {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Оберіть тему';
+      case 'en':
+        return 'Choose theme';
+      case 'es':
+        return 'Elige el tema';
+      case 'hi':
+        return 'थीम चुनें';
+      case 'zh':
+        return '选择主题';
+      default:
+        return 'Оберіть тему';
+    }
+  }
+
+  String get themeSystem {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Системна';
+      case 'en':
+        return 'System';
+      case 'es':
+        return 'Sistema';
+      case 'hi':
+        return 'सिस्टम';
+      case 'zh':
+        return '跟随系统';
+      default:
+        return 'Системна';
+    }
+  }
+
+  String get themeLight {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Світла';
+      case 'en':
+        return 'Light';
+      case 'es':
+        return 'Claro';
+      case 'hi':
+        return 'लाइट';
+      case 'zh':
+        return '浅色';
+      default:
+        return 'Світла';
+    }
+  }
+
+  String get themeDark {
+    switch (locale.languageCode) {
+      case 'uk':
+        return 'Темна';
+      case 'en':
+        return 'Dark';
+      case 'es':
+        return 'Oscuro';
+      case 'hi':
+        return 'डार्क';
+      case 'zh':
+        return '深色';
+      default:
+        return 'Темна';
+    }
+  }
+
   String get privacyPolicy {
     switch (locale.languageCode) {
       case 'uk':

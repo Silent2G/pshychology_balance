@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../constants/app_palette.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   final int currentIndex;
@@ -31,7 +32,7 @@ class CustomBottomNavBar extends StatelessWidget {
               width: screenWidth * 0.733, // ~275px on 375px
               height: screenHeight * 0.074, // ~60px on 812px
               decoration: BoxDecoration(
-                color: const Color(0xFFFDFDFD),
+                color: context.palette.surface,
                 borderRadius: BorderRadius.circular(99),
                 boxShadow: [
                   BoxShadow(
@@ -59,7 +60,7 @@ class CustomBottomNavBar extends StatelessWidget {
                   width: screenWidth * 0.053, // ~20px on 375px
                   height: screenWidth * 0.053, // ~20px on 375px
                   colorFilter: ColorFilter.mode(
-                    currentIndex == 1 ? const Color(0xFFBC91DB) : const Color(0xFFD0D0D0),
+                    currentIndex == 1 ? const Color(0xFFBC91DB) : context.palette.textMuted,
                     BlendMode.srcIn,
                   ),
                 ),
@@ -77,7 +78,7 @@ class CustomBottomNavBar extends StatelessWidget {
                 width: screenWidth * 0.16,
                 height: screenWidth * 0.16,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFDFDFD),
+                  color: context.palette.surface,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
@@ -93,7 +94,7 @@ class CustomBottomNavBar extends StatelessWidget {
                     width: screenWidth * 0.064,
                     height: screenWidth * 0.064,
                     colorFilter: ColorFilter.mode(
-                      currentIndex == 0 ? const Color(0xFFBC91DB) : const Color(0xFFD0D0D0),
+                      currentIndex == 0 ? const Color(0xFFBC91DB) : context.palette.textMuted,
                       BlendMode.srcIn,
                     ),
                   ),
@@ -117,7 +118,7 @@ class CustomBottomNavBar extends StatelessWidget {
                   width: screenWidth * 0.053, // ~20px on 375px
                   height: screenWidth * 0.053, // ~20px on 375px
                   colorFilter: ColorFilter.mode(
-                    currentIndex == 2 ? const Color(0xFFBC91DB) : const Color(0xFFD0D0D0),
+                    currentIndex == 2 ? const Color(0xFFBC91DB) : context.palette.textMuted,
                     BlendMode.srcIn,
                   ),
                 ),

@@ -1,6 +1,8 @@
 import 'dart:ui' show ImageFilter;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../constants/app_palette.dart';
+import '../widgets/app_background.dart';
 import '../l10n/app_localizations.dart';
 
 class MainInterfaceScreen extends StatelessWidget {
@@ -27,13 +29,8 @@ class MainInterfaceScreen extends StatelessWidget {
     final screenHeight = screenSize.height;
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Container(
-        width: screenWidth,
-        height: screenHeight,
-        decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/background_main.png'), fit: BoxFit.cover),
-        ),
+      backgroundColor: context.palette.scaffold,
+      body: AppBackground(
         child: SafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.043),
@@ -104,7 +101,7 @@ class MainInterfaceScreen extends StatelessWidget {
                           fontWeight: FontWeight.w400,
                           fontSize: screenWidth * 0.045, // ~17px on 375px — reads as a subtitle
                           height: 1.3,
-                          color: const Color(0xFF272727),
+                          color: context.palette.textPrimary,
                         ),
                       ),
                     ],
@@ -175,10 +172,16 @@ class MainInterfaceScreen extends StatelessWidget {
       child: Container(
         height: screenHeight * 0.111, // ~90px on 812px
         width: double.infinity,
-        decoration: BoxDecoration(
-          image: const DecorationImage(image: AssetImage('assets/bg_large_button.png'), fit: BoxFit.fill),
-          borderRadius: BorderRadius.circular(99),
-        ),
+        decoration: context.palette.isDark
+            ? BoxDecoration(
+                color: context.palette.surface,
+                borderRadius: BorderRadius.circular(99),
+                border: Border.all(color: context.palette.surfaceBorder, width: 1.5),
+              )
+            : BoxDecoration(
+                image: const DecorationImage(image: AssetImage('assets/bg_large_button.png'), fit: BoxFit.fill),
+                borderRadius: BorderRadius.circular(99),
+              ),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.043), // ~16px
           child: Row(
@@ -216,7 +219,7 @@ class MainInterfaceScreen extends StatelessWidget {
                         fontWeight: FontWeight.w400,
                         fontSize: screenWidth * 0.032, // ~12px
                         height: 1.25, // 15/12
-                        color: const Color(0xFF272727),
+                        color: context.palette.textPrimary,
                       ),
                     ),
                   ],

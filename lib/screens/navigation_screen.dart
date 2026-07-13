@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../constants/app_palette.dart';
 import '../widgets/custom_bottom_nav_bar.dart';
 import '../providers/locale_provider.dart';
 import 'main_interface_screen.dart';
@@ -58,7 +59,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
       });
     }
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: context.palette.scaffold,
       body: Stack(
         children: [
           _screens[_currentIndex],

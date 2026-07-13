@@ -7,10 +7,11 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'constants/app_colors.dart';
+import 'constants/app_theme.dart';
 import 'providers/auth_provider.dart';
 import 'providers/subscription_provider.dart';
 import 'providers/locale_provider.dart';
+import 'providers/theme_provider.dart';
 import 'l10n/app_localizations.dart';
 import 'screens/welcome_screen.dart';
 import 'screens/test_intro_screen.dart';
@@ -87,16 +88,15 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(create: (context) => SubscriptionProvider()),
         ChangeNotifierProvider(create: (context) => LocaleProvider()),
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
       ],
-      child: Consumer<LocaleProvider>(
-        builder: (context, localeProvider, child) {
+      child: Consumer2<LocaleProvider, ThemeProvider>(
+        builder: (context, localeProvider, themeProvider, child) {
           return MaterialApp(
             title: 'AI Psychology Balance',
-            theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryBlue),
-              useMaterial3: true,
-              fontFamily: 'Montserrat',
-            ),
+            theme: AppTheme.light,
+            darkTheme: AppTheme.dark,
+            themeMode: themeProvider.themeMode,
             locale: localeProvider.locale,
             localizationsDelegates: const [
               AppLocalizations.delegate,
