@@ -84,7 +84,9 @@ class SubscriptionPlans {
       'Пріоритетна підтримка',
     ],
     appleProductId: 'premium_monthly',
-    googleProductId: 'psypremium:premium-monthly',
+    // Google base plan `premium-monthly` was burned (wrong billing period), so
+    // the new monthly base plan uses `premium-monthly-1`. Apple ID is unchanged.
+    googleProductId: 'psypremium:premium-monthly-1',
     packageId: '\$rc_monthly', // Package ID from RevenueCat Dashboard
   );
 
