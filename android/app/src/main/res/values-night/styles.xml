@@ -15,4 +15,11 @@
     <style name="NormalTheme" parent="@android:style/Theme.Black.NoTitleBar">
         <item name="android:windowBackground">?android:colorBackground</item>
     </style>
+    <!-- Dark variant of the uCrop crop-screen theme (see values/styles.xml). -->
+    <style name="Theme.PsyBalance.UCrop" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:statusBarColor">#14111C</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
+    </style>
 </resources>

@@ -15,4 +15,12 @@
     <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowBackground">?android:colorBackground</item>
     </style>
+    <!-- Theme for the image_cropper (uCrop) activity. Keeps the toolbar below the
+         status bar on Android 15+ where edge-to-edge is enforced by default. -->
+    <style name="Theme.PsyBalance.UCrop" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:statusBarColor">#FDFDFD</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
+    </style>
 </resources>
