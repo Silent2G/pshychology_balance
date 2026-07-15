@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import '../constants/app_palette.dart';
 import '../widgets/app_background.dart';
@@ -351,52 +352,53 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           ),
 
                           SizedBox(height: screenHeight * 0.04), // ~32px
-                          // Google and Apple buttons
+                          // Social sign-in button — Google on Android, Apple on iOS
                           Row(
                             children: [
-                              Expanded(
-                                child: _buildSocialButton(
-                                  icon: SvgPicture.asset(
-                                    'assets/ic_google.svg',
-                                    width: screenWidth * 0.053, // ~20px
-                                    height: screenWidth * 0.053, // ~20px
+                              if (Platform.isAndroid)
+                                Expanded(
+                                  child: _buildSocialButton(
+                                    icon: SvgPicture.asset(
+                                      'assets/ic_google.svg',
+                                      width: screenWidth * 0.053, // ~20px
+                                      height: screenWidth * 0.053, // ~20px
+                                    ),
+                                    text: 'Google',
+                                    onPressed: () async {
+                                      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+                                      final success = await authProvider.signInWithGoogle();
+                                      if (success) {
+                                        if (mounted) Navigator.of(context).pop();
+                                      } else if (authProvider.errorMessage != null) {
+                                        _showError(authProvider.errorMessage!);
+                                      }
+                                    },
+                                    screenWidth: screenWidth,
+                                    screenHeight: screenHeight,
                                   ),
-                                  text: 'Google',
-                                  onPressed: () async {
-                                    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-                                    final success = await authProvider.signInWithGoogle();
-                                    if (success) {
-                                      if (mounted) Navigator.of(context).pop();
-                                    } else if (authProvider.errorMessage != null) {
-                                      _showError(authProvider.errorMessage!);
-                                    }
-                                  },
-                                  screenWidth: screenWidth,
-                                  screenHeight: screenHeight,
                                 ),
-                              ),
-                              SizedBox(width: screenWidth * 0.053), // ~20px
-                              Expanded(
-                                child: _buildSocialButton(
-                                  icon: SvgPicture.asset(
-                                    'assets/ic_apple.svg',
-                                    width: screenWidth * 0.053, // ~20px
-                                    height: screenWidth * 0.053, // ~20px
+                              if (Platform.isIOS)
+                                Expanded(
+                                  child: _buildSocialButton(
+                                    icon: SvgPicture.asset(
+                                      'assets/ic_apple.svg',
+                                      width: screenWidth * 0.053, // ~20px
+                                      height: screenWidth * 0.053, // ~20px
+                                    ),
+                                    text: 'Apple',
+                                    onPressed: () async {
+                                      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+                                      final success = await authProvider.signInWithApple();
+                                      if (success) {
+                                        if (mounted) Navigator.of(context).pop();
+                                      } else if (authProvider.errorMessage != null) {
+                                        _showError(authProvider.errorMessage!);
+                                      }
+                                    },
+                                    screenWidth: screenWidth,
+                                    screenHeight: screenHeight,
                                   ),
-                                  text: 'Apple',
-                                  onPressed: () async {
-                                    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-                                    final success = await authProvider.signInWithApple();
-                                    if (success) {
-                                      if (mounted) Navigator.of(context).pop();
-                                    } else if (authProvider.errorMessage != null) {
-                                      _showError(authProvider.errorMessage!);
-                                    }
-                                  },
-                                  screenWidth: screenWidth,
-                                  screenHeight: screenHeight,
                                 ),
-                              ),
                             ],
                           ),
                         ],
