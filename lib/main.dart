@@ -38,10 +38,12 @@ void main() async {
   // system bars transparent so Flutter draws behind them; every screen already
   // wraps its content in SafeArea, so nothing is hidden behind the bars.
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  // Don't pass statusBarColor/systemNavigationBarColor: in edgeToEdge mode the
+  // system already draws transparent bars, and passing non-null colors makes
+  // Flutter's engine call the deprecated Window.setStatusBarColor /
+  // setNavigationBarColor APIs (removed in Android 15+).
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      systemNavigationBarColor: Colors.transparent,
       systemNavigationBarContrastEnforced: false,
     ),
   );
