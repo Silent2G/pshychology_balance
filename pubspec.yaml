@@ -85,6 +85,20 @@ dev_dependencies:
   # so 2.4.7 is the newest compatible release. Pinned exactly to avoid 2.4.8.
   flutter_native_splash: 2.4.7
 
+  # Generates the Android launcher icons from the images below so Android
+  # matches the iOS icon. Run `dart run flutter_launcher_icons` after changes.
+  flutter_launcher_icons: ^0.14.4
+
+# Android launcher icon: brain on white, matching the iOS app icon.
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/launcher/icon.png"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/launcher/foreground.png"
+  adaptive_icon_monochrome: "assets/launcher/foreground.png"
+  min_sdk_android: 21
+
 # Cold-start splash configuration (Android only — brain logo on white).
 # android12splash uses extra padding to survive Android 12+'s circular mask.
 flutter_native_splash:
