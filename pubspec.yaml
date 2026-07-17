@@ -79,6 +79,24 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
 
+  # Generates the Android cold-start (splash) screen assets from the images
+  # below. Run `dart run flutter_native_splash:create` after changing config.
+  # 2.4.8 requires meta ^1.18.0, but the pinned Flutter SDK ships meta 1.17.0,
+  # so 2.4.7 is the newest compatible release. Pinned exactly to avoid 2.4.8.
+  flutter_native_splash: 2.4.7
+
+# Cold-start splash configuration (Android only — brain logo on white).
+# android12splash uses extra padding to survive Android 12+'s circular mask.
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: assets/splash/splash.png
+  android: true
+  ios: false
+  web: false
+  android_12:
+    color: "#FFFFFF"
+    image: assets/splash/android12splash.png
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
